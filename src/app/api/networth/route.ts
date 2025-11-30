@@ -1,0 +1,46 @@
+import { NextResponse } from 'next/server';
+import { UpdateNetWorth } from '../../../application/use-cases/UpdateNetWorth';
+import { GetNetWorthHistory } from '../../../application/use-cases/GetNetWorthHistory';
+import { GoogleSheetsNetWorthRepository } from '../../../infrastructure/repositories/GoogleSheetsNetWorthRepository';
+
+export async function GET() {
+  try {
+    const netWorthRepository = new GoogleSheetsNetWorthRepository();
+    const getNetWorthHistoryUseCase = new GetNetWorthHistory(netWorthRepository);
+
+    const history = await getNetWorthHistoryUseCase.execute();
+
+    return NextResponse.json(history, { status: 200 });
+  } catch (error: any) {
+    console.error('Error fetching net worth history:', error);
+    return NextResponse.json({ message: 'Error fetching net worth history', error: error.message }, { status: 500 });
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const { month, hucha, invertido } = await request.json();
+
+    // Validar los datos de entrada
+    if (!month || typeof hucha !== 'number' || typeof invertido !== 'number') {
+      return NextResponse.json({ message: 'Missing or invalid net worth data' }, { status: 400 });
+    }
+
+    const netWorthRepository = new GoogleSheetsNetWorthRepository();
+    const updateNetWorthUseCase = new UpdateNetWorth(netWorthRepository);
+
+    // month debe ser una cadena de fecha que se pueda convertir a Date
+    const monthDate = new Date(month);
+
+    const updatedNetWorth = await updateNetWorthUseCase.execute(
+      monthDate,
+      hucha,
+      invertido
+    );
+
+    return NextResponse.json(updatedNetWorth, { status: 200 });
+  } catch (error: any) {
+    console.error('Error updating net worth:', error);
+    return NextResponse.json({ message: 'Error updating net worth', error: error.message }, { status: 500 });
+  }
+}
