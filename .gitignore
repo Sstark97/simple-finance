@@ -3,22 +3,16 @@
 # dependencies
 /node_modules
 /.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+.pnp.js
 
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
-
 # production
 /build
+/dist
+.next/
+out/
 
 # misc
 .DS_Store
@@ -30,12 +24,31 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# local env files
+.env*.local
+.env
 
-# vercel
+# Next.js build output
+.next
+.turbo/
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Next.js specific
+.next
+.next/
+out/
 .vercel
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# Custom ignores
+.agents/
+.gemini/
+GEMINI.md
+/credentials.json
