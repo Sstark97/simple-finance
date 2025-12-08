@@ -4,30 +4,34 @@
  */
 
 /**
- * Parses a month-year string (MM/YYYY or MM/YY) into a Date object
- * @param dateString - Date string in format "MM/YYYY" or "MM/YY"
+ * Parses a month-year string in Spanish format ("enero de 2025") into a Date object
+ * @param dateString - Date string in format "nombre_del_mes de YYYY" (e.g., "diciembre de 2025")
  * @returns Date object set to the first day of the month in UTC
  */
 export function parseMonthYearString(dateString: string): Date {
-  const parts = dateString.split('/');
+  const monthNames = [
+    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+  ];
+
+  const parts = dateString.split(' de ');
   if (parts.length !== 2) {
-    throw new Error(`Invalid date format: ${dateString}. Expected MM/YYYY or MM/YY`);
+    throw new Error(`Invalid date format: ${dateString}. Expected "mes de año" (e.g., "diciembre de 2025")`);
   }
 
-  const month = parseInt(parts[0], 10);
-  let year = parseInt(parts[1], 10);
+  const monthName = parts[0].toLowerCase();
+  const year = parseInt(parts[1], 10);
+  const monthIndex = monthNames.indexOf(monthName);
 
-  // Validate month
-  if (month < 1 || month > 12) {
-    throw new Error(`Invalid month: ${month}. Must be between 1 and 12`);
+  if (monthIndex === -1) {
+    throw new Error(`Invalid month name: ${monthName}. Must be a Spanish month name`);
   }
 
-  // Handle 2-digit years (assume 2000+ if < 100)
-  if (year < 100) {
-    year += 2000;
+  if (isNaN(year)) {
+    throw new Error(`Invalid year: ${parts[1]}`);
   }
 
-  return new Date(Date.UTC(year, month - 1, 1));
+  return new Date(Date.UTC(year, monthIndex, 1));
 }
 
 /**
@@ -62,14 +66,13 @@ export function parseDayMonthYearString(dateString: string): Date {
 }
 
 /**
- * Formats a Date object into Google Sheets month format (MM/YYYY)
+ * Formats a Date object into Google Sheets month format in Spanish (e.g., "diciembre de 2025")
  * @param date - Date object to format
- * @returns String in format "MM/YYYY"
+ * @returns String in format "mes de año" (e.g., "diciembre de 2025")
  */
 export function formatMonthForSheet(date: Date): string {
-  const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-  const year = date.getUTCFullYear();
-  return `${month}/${year}`;
+  const options: Intl.DateTimeFormatOptions = { month: 'long', year: 'numeric', timeZone: 'UTC' };
+  return date.toLocaleDateString('es-ES', options);
 }
 
 /**

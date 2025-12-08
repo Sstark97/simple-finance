@@ -1,156 +1,436 @@
-
-# Personal Finance Tracker with Google Sheets Backend
-
-## 1. Project Overview
-
-I need to build a mobile-first web application to manage personal finances. The application will serve as a UI for an existing **Google Sheet** database. The system must Read and Write data to specific rows based on the current date/month, ensuring that existing spreadsheet formulas are preserved and updated correctly.
-
-## 2. Database Schema (Google Sheets)
-
-The application must strictly map to the following structure found in the `.xlsx` file:
-
-### Tab 1: "Dashboard" (Monthly Goals & Summary)
-
-Description: A historical table where each row represents a month's summary.
-
-Columns:
-
--   `Col A` **MES** (Date, YYYY-MM-DD): _Primary Key. Represents the 1st of the month._
-
--   `Col B` **INGRESOS** (Number): _User Input (Monthly Salary)._
-
--   `Col C` **GASTOS** (Number): _Read Only. Calculated by Excel formula summing the 'Gastos' tab._
-
--   `Col D` **AHORRO** (Number): _User Input (Savings Goal for cash)._
-
--   `Col E` **INVERSION** (Number): _User Input (Investment Goal for ETFs)._
-
--   `Col F` **DINERO LIBRE** (Number): _Read Only. Calculated by Excel formula._
-
--   `Col G` **ESTADO** (String): _Read Only. Status output (e.g., "🚀 Va bien")._
-
-
-### Tab 2: "Gastos" (Transaction Log)
-
-Description: An append-only list of individual expenses.
-
-Columns:
-
--   `Col A` **FECHA COBRO** (Date): _Transaction date._
-
--   `Col B` **CONCEPTO** (String): _Description._
-
--   `Col C` **IMPORTE (€)** (Number): _Amount._
-
--   `Col D` **CATEGORIA** (String): _Category (e.g., Super, Ocio, Coche)._
-
-
-### Tab 3: "Patrimonio" (Net Worth History)
-
-Description: A historical snapshot of assets per month.
-
-Columns:
-
--   `Col A` **MES** (Date, YYYY-MM-DD): _Primary Key._
-
--   `Col B` **HUCHA** (Number): _User Input (Total Cash available)._
-
--   `Col C` **INVERTIDO** (Number): _User Input (Total Value of Investments)._
-
--   `Col D` **TOTAL** (Number): _Read Only. Calculated by Excel formula._
-
-
-## 3. Core Functionality & Logic
-
-### A. Dashboard View (Read Operation)
-
-Objective: Display the financial status for the current month.
-
-Logic:
-
-1.  Determine the current date.
-
-2.  Query the **"Dashboard"** tab and find the row where `MES` matches the current month (e.g., `2025-12-01`).
-
-3.  **Display:**
-
-    -   **Main Metric:** "DINERO LIBRE" (Col F).
-
-    -   **Summary:** Ingresos vs. Gastos vs. Goals (Ahorro + Inversion).
-
-    -   **Status:** Display the emoji/text from Col G.
-
-
-### B. Add Transaction (Write Operation)
-
-Objective: Log a new expense.
-
-UI Inputs: Date (default today), Concept, Amount, Category.
-
-Logic:
-
-1.  Receive inputs.
-
-2.  **Append** a new row to the **"Gastos"** tab with the provided data.
-
-3.  _Note:_ The application relies on the Google Sheet to recalculate the "GASTOS" total in the Dashboard tab. The app should re-fetch the Dashboard data after a successful submission.
-
-
-### C. Update Monthly Settings (Write Operation)
-
-Objective: Adjust income or goals for the current month.
-
-UI Inputs: Salary, Savings Goal, Investment Goal.
-
-Logic:
-
-1.  Find the row for the current month in the **"Dashboard"** tab.
-
-2.  **Update only** Columns B (INGRESOS), D (AHORRO), and E (INVERSION).
-
-3.  _Constraint:_ Do NOT overwrite Columns C, F, or G as they contain formulas.
-
-
-### D. Update Net Worth (Write Operation)
-
-Objective: Update the current value of assets.
-
-UI Inputs: Total Cash (Hucha), Total Invested.
-
-Logic:
-
-1.  Find the row for the current month in the **"Patrimonio"** tab.
-
-    -   _If the row does not exist (new month), create it._
-
-2.  **Update** Columns B (HUCHA) and C (INVERTIDO).
-
-3.  Fetch and display the calculated Total from Col D.
-
-
-## 4. Technical Requirements
-
-1.  **Google Sheets API:** The backend must communicate using the Google Sheets API (v4).
-
-2.  **Authentication:** Use a **Service Account** (JSON credentials) for server-side authentication. The user should not need to log in with Google; the app acts as an admin interface for the sheet.
-
-3.  **Formula Preservation:** Write operations must be precise (targeting specific cells or appending rows) to avoid breaking existing spreadsheet formulas.
-
-4.  **Mobile First:** The UI layout must be optimized for mobile screens.
-
-
-## 5. Output Needed
-
-Based on these specifications, please provide:
-
-1.  **Tech Stack Recommendation:** The best modern stack for this specific use case (fast, simple, robust).
-
-2.  **Project Structure:** Folder organization.
-
-3.  **Implementation Code:**
-
-    -   Setup for Google Sheets API authentication.
-
-    -   Functions to `appendRow` (for expenses).
-
-    -   Functions to `findRowByDate` and `updateRow` (for Dashboard/Patrimonio).
+# Plan: Refactoring Completo de Simple Finance
+
+## Resumen Ejecutivo
+
+El proyecto tiene problemas significativos de arquitectura y calidad de código. Este plan aborda:
+
+1. **Errores TypeScript** (12 errores de compilación)
+2. **Arquitectura** - Convertir a Server Components + Server Actions
+3. **Calidad de código** - Eliminar duplicación, mejorar tipado
+4. **Testing** - Configurar framework y escribir tests
+5. **PWA** - Hacer la app instalable en móvil
+6. **Autenticación** - Proteger la app con Google OAuth (solo tu email)
+
+---
+
+## Estado Actual - Problemas Identificados
+
+### Errores de Compilación (12 errores)
+| Archivo | Problema |
+|---------|----------|
+| `sidebar.tsx` | Falta import `SheetDescription` |
+| `chart.tsx` | Tipos de Recharts incorrectos (8 errores) |
+| `settings/route.ts` | `error` es `unknown` |
+| `transactions/route.ts` | `error` es `unknown` + uso de `any` |
+
+### Componentes Cliente Innecesarios (Anti-patrón)
+| Archivo | Problema | Solución |
+|---------|----------|----------|
+| `gastos/page.tsx` | useEffect + fetch cliente | Server Component |
+| `patrimonio/page.tsx` | useEffect + fetch cliente | Server Component |
+| `dashboard-header.tsx` | Solo usa router.push | Server Component con form |
+
+### Duplicación de Código
+- Funciones de parsing de fechas duplicadas en 3 repositorios
+- Tipos FormState duplicados en 3 server actions
+- Patrón de error handling repetido 5+ veces
+
+### Sin Tests
+- No hay framework de testing configurado
+- No hay tests unitarios ni E2E
+- La estructura `tests/` no existe
+
+---
+
+## Fases de Implementación
+
+### Fase 1: Corregir Errores de Compilación
+**Prioridad: CRÍTICA** - Sin esto no compila
+
+#### 1.1 sidebar.tsx - Añadir import
+```typescript
+import { SheetDescription } from '@/app/(components)/ui/sheet'
+```
+
+#### 1.2 chart.tsx - Corregir tipos Recharts
+Definir tipos explícitos para payload de Tooltip y Legend.
+
+#### 1.3 API Routes - Error handling
+```typescript
+catch (error) {
+  const message = error instanceof Error ? error.message : 'Unknown error';
+}
+```
+
+**Archivos:**
+- `src/app/(components)/ui/sidebar.tsx`
+- `src/app/(components)/ui/chart.tsx`
+- `src/app/api/dashboard/settings/route.ts`
+- `src/app/api/transactions/route.ts`
+
+---
+
+### Fase 2: Refactorizar a Server Components
+
+#### 2.1 Convertir gastos/page.tsx a Server Component
+**Antes (anti-patrón):**
+```typescript
+'use client'
+useEffect(() => { fetch('/api/transactions') }, [])
+```
+
+**Después:**
+```typescript
+// Server Component - sin 'use client'
+export default async function GastosPage() {
+  const repository = new GoogleSheetsTransactionRepository();
+  const useCase = new GetTransactions(repository);
+  const transactions = await useCase.execute();
+  return <TransactionsTable data={transactions} />;
+}
+```
+
+#### 2.2 Convertir patrimonio/page.tsx a Server Component
+Mismo patrón que gastos.
+
+#### 2.3 Refactorizar DashboardHeader
+Usar `<form>` con Server Action para cambio de mes en lugar de `router.push`.
+
+**Archivos a modificar:**
+- `src/app/gastos/page.tsx`
+- `src/app/patrimonio/page.tsx`
+- `src/app/(components)/dashboard/dashboard-header.tsx`
+
+---
+
+### Fase 3: Limpiar Arquitectura Hexagonal
+
+#### 3.1 Extraer utilidades compartidas
+Crear `src/lib/utils/dateParser.ts`:
+```typescript
+export function parseMonthYearString(dateString: string): Date { }
+export function parseDayMonthYearString(dateString: string): Date { }
+export function formatMonthForSheet(date: Date): string { }
+```
+
+#### 3.2 Crear tipos compartidos para formularios
+Crear `src/lib/types/formState.ts`:
+```typescript
+export type FormState<T = Record<string, string[]>> = {
+  errors?: T;
+  message?: string;
+  success?: boolean;
+};
+```
+
+#### 3.3 Crear error handler compartido
+Crear `src/lib/utils/errorHandler.ts`:
+```typescript
+export function handleGoogleSheetsError(error: unknown): { code: number; message: string } { }
+```
+
+#### 3.4 Extraer configuración de Google Sheets
+Crear `src/lib/config/sheets.ts`:
+```typescript
+export const SHEET_CONFIG = {
+  dashboard: { name: 'Dashboard', range: 'A:G' },
+  transactions: { name: 'Gastos', range: 'A:D' },
+  networth: { name: 'Patrimonio', range: 'A:B' },
+};
+```
+
+**Archivos nuevos:**
+- `src/lib/utils/dateParser.ts`
+- `src/lib/types/formState.ts`
+- `src/lib/utils/errorHandler.ts`
+- `src/lib/config/sheets.ts`
+
+**Archivos a refactorizar:**
+- `src/lib/infrastructure/repositories/GoogleSheetsDashboardRepository.ts`
+- `src/lib/infrastructure/repositories/GoogleSheetsTransactionRepository.ts`
+- `src/lib/infrastructure/repositories/GoogleSheetsNetWorthRepository.ts`
+- `src/lib/infrastructure/actions/*.ts`
+
+---
+
+### Fase 4: Configurar Testing
+
+#### 4.1 Instalar dependencias
+```bash
+pnpm add -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/jest-dom playwright @playwright/test
+```
+
+#### 4.2 Configurar Vitest
+Crear `vitest.config.ts`:
+```typescript
+import { defineConfig } from 'vitest/config'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./tests/setup.ts'],
+  },
+})
+```
+
+#### 4.3 Configurar Playwright
+Crear `playwright.config.ts` para E2E tests.
+
+#### 4.4 Crear estructura de tests
+```
+tests/
+├── setup.ts
+├── contexts/           # Backend tests (unit)
+│   ├── domain/
+│   └── application/
+└── app/               # Frontend tests (E2E)
+    ├── dashboard.spec.ts
+    ├── gastos.spec.ts
+    └── patrimonio.spec.ts
+```
+
+#### 4.5 Escribir tests críticos
+- Tests unitarios para use cases
+- Tests unitarios para domain models
+- Tests E2E para flujos principales
+
+**Archivos nuevos:**
+- `vitest.config.ts`
+- `playwright.config.ts`
+- `tests/setup.ts`
+- `tests/contexts/application/GetCurrentDashboard.test.ts`
+- `tests/contexts/application/AddTransaction.test.ts`
+- `tests/app/dashboard.spec.ts`
+
+---
+
+### Fase 4.5: Adaptar Vistas a Diseño V0
+
+**Objetivo:** Aplicar el diseño UI de V0 a las páginas gastos y patrimonio (el dashboard ya está adaptado)
+
+#### 4.5.1 Adaptar página de Gastos
+- Aplicar estilos y componentes V0 a `src/app/gastos/page.tsx`
+- Actualizar `src/app/(components)/dashboard/transactions-table.tsx` con diseño V0
+- Asegurar consistencia con el dashboard
+
+#### 4.5.2 Adaptar página de Patrimonio
+- Aplicar estilos y componentes V0 a `src/app/patrimonio/page.tsx`
+- Actualizar `src/app/(components)/dashboard/networth-table.tsx` con diseño V0
+- Asegurar consistencia con el dashboard
+
+**NOTA:** El usuario proporcionará el código/diseño de V0 cuando se llegue a esta fase.
+
+**Archivos a modificar:**
+- `src/app/gastos/page.tsx`
+- `src/app/patrimonio/page.tsx`
+- `src/app/(components)/dashboard/transactions-table.tsx`
+- `src/app/(components)/dashboard/networth-table.tsx`
+
+---
+
+### Fase 5: Implementar PWA
+
+#### 5.1 Crear manifest
+Crear `src/app/manifest.ts`:
+```typescript
+import type { MetadataRoute } from 'next'
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: 'Simple Finance',
+    short_name: 'Finance',
+    description: 'Personal finance tracker',
+    start_url: '/',
+    display: 'standalone',
+    background_color: '#ffffff',
+    theme_color: '#000000',
+    icons: [
+      { src: '/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { src: '/icon-512x512.png', sizes: '512x512', type: 'image/png' },
+    ],
+  }
+}
+```
+
+#### 5.2 Crear iconos PWA
+Generar iconos placeholder simples (192x192 y 512x512 px) con texto "SF" que el usuario puede reemplazar después.
+
+#### 5.3 Configurar Service Worker (opcional para offline)
+Crear `public/sw.js` básico para caching.
+
+**Archivos nuevos:**
+- `src/app/manifest.ts`
+- `public/icon-192x192.png`
+- `public/icon-512x512.png`
+- `public/sw.js` (opcional)
+
+---
+
+### Fase 6: Implementar Autenticación
+
+#### 6.1 Instalar NextAuth.js
+```bash
+pnpm add next-auth@beta
+```
+
+#### 6.2 Configurar Google OAuth
+Crear `src/lib/auth.ts`:
+```typescript
+import NextAuth from 'next-auth'
+import Google from 'next-auth/providers/google'
+
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  providers: [Google],
+  callbacks: {
+    signIn({ user }) {
+      const allowedEmail = process.env.ALLOWED_EMAIL
+      return user.email === allowedEmail
+    },
+  },
+})
+```
+
+**Variables de entorno requeridas:**
+- `GOOGLE_CLIENT_ID` - OAuth client ID de Google Cloud Console
+- `GOOGLE_CLIENT_SECRET` - OAuth client secret
+- `ALLOWED_EMAIL` - Tu email de Google (único autorizado)
+- `AUTH_SECRET` - Secret para NextAuth (generar con `openssl rand -base64 32`)
+
+#### 6.3 Crear API route para auth
+Crear `src/app/api/auth/[...nextauth]/route.ts`
+
+#### 6.4 Crear middleware de protección
+Crear `src/middleware.ts`:
+```typescript
+import { auth } from '@/lib/auth'
+
+export default auth((req) => {
+  if (!req.auth && req.nextUrl.pathname !== '/login') {
+    return Response.redirect(new URL('/login', req.url))
+  }
+})
+
+export const config = {
+  matcher: ['/((?!api/auth|_next/static|_next/image|.*\\.png$).*)'],
+}
+```
+
+#### 6.5 Crear página de login
+Crear `src/app/login/page.tsx` con botón de Google Sign-In.
+
+**Archivos nuevos:**
+- `src/lib/auth.ts`
+- `src/app/api/auth/[...nextauth]/route.ts`
+- `src/middleware.ts`
+- `src/app/login/page.tsx`
+
+---
+
+## ✅ PROGRESO ACTUAL
+
+### ✅ Fase 1: COMPLETADA
+- ✓ sidebar.tsx - Añadido import SheetDescription
+- ✓ chart.tsx - Corregidos tipos Recharts (8 errores)
+- ✓ API routes - Error handling corregido (4 errores)
+- ✓ Build exitoso, 0 errores TypeScript
+
+### ✅ Fase 2: COMPLETADA
+- ✓ gastos/page.tsx convertido a Server Component
+- ✓ patrimonio/page.tsx convertido a Server Component
+- ✓ Creados TransactionsTable y NetWorthTable (Client Components)
+- ✓ Eliminado anti-patrón useEffect + fetch
+
+### ✅ Fase 3: COMPLETADA
+- ✓ Creado /src/lib/utils/dateParser.ts
+- ✓ Creado /src/lib/types/formState.ts
+- ✓ Creado /src/lib/utils/errorHandler.ts
+- ✓ Creado /src/lib/config/sheets.ts
+- ✓ Refactorizados 3 repositorios
+- ✓ Refactorizados 3 server actions
+- ✓ ~93 líneas de duplicación eliminadas
+
+### ✅ Fase 4: COMPLETADA
+- ✓ Instaladas dependencias de testing (Vitest, Playwright, Testing Library)
+- ✓ Creado vitest.config.ts con configuración para unit tests
+- ✓ Creado playwright.config.ts con configuración para E2E tests
+- ✓ Creada estructura de tests (tests/contexts/, tests/app/)
+- ✓ Escritos tests unitarios:
+  - `tests/contexts/application/GetCurrentDashboard.test.ts`
+  - `tests/contexts/application/AddTransaction.test.ts`
+  - `tests/contexts/application/GetTransactions.test.ts`
+- ✓ Escritos tests E2E:
+  - `tests/app/dashboard.spec.ts`
+  - `tests/app/gastos.spec.ts`
+  - `tests/app/patrimonio.spec.ts`
+- ✓ Añadidos scripts de test a package.json
+- ⚠️ **NOTA:** Los tests solo se ejecutan manualmente por el usuario
+
+### 🐛 Bug Fixes Post-Refactoring
+- ✓ Corregido searchParams en Next.js 16 (ahora es Promise, requiere await)
+  - Archivos: `src/app/page.tsx`, `src/app/(components)/dashboard/DashboardView.tsx`
+- ✓ Corregidas funciones de parseo de fechas para usar formato español
+  - `formatMonthForSheet()`: ahora devuelve "diciembre de 2025" (era "12/2025")
+  - `parseMonthYearString()`: ahora parsea "diciembre de 2025" (era "12/2025")
+  - Archivo: `src/lib/utils/dateParser.ts`
+
+### 🔄 PENDIENTE: Fases 4.5-6
+
+## Orden de Ejecución
+
+| Fase | Descripción | Estado |
+|------|-------------|--------|
+| 1 | Fix TypeScript errors | ✅ COMPLETADA |
+| 2 | Server Components refactor | ✅ COMPLETADA |
+| 3 | Clean architecture | ✅ COMPLETADA |
+| 4 | Testing setup + tests | ✅ COMPLETADA |
+| 4.5 | Adapt UI to V0 design | ⏳ PENDIENTE |
+| 5 | PWA implementation | ⏳ PENDIENTE |
+| 6 | Authentication | ⏳ PENDIENTE |
+
+---
+
+## Verificación Final
+
+1. `npx tsc --noEmit` - 0 errores
+2. `pnpm run build` - Build exitoso
+3. `pnpm run test` - Tests pasando
+4. `pnpm run test:e2e` - E2E pasando
+5. Manual: App instalable en móvil
+6. Manual: Solo tu email puede acceder
+
+---
+
+## Archivos Totales a Modificar/Crear
+
+### Modificar (existentes):
+- `src/app/(components)/ui/sidebar.tsx`
+- `src/app/(components)/ui/chart.tsx`
+- `src/app/api/dashboard/settings/route.ts`
+- `src/app/api/transactions/route.ts`
+- `src/app/gastos/page.tsx`
+- `src/app/patrimonio/page.tsx`
+- `src/app/(components)/dashboard/dashboard-header.tsx`
+- `src/lib/infrastructure/repositories/*.ts` (3 archivos)
+- `src/lib/infrastructure/actions/*.ts` (3 archivos)
+- `package.json` (nuevas dependencias)
+- `next.config.ts` (headers PWA)
+
+### Crear (nuevos):
+- `src/lib/utils/dateParser.ts`
+- `src/lib/types/formState.ts`
+- `src/lib/utils/errorHandler.ts`
+- `src/lib/config/sheets.ts`
+- `src/lib/auth.ts`
+- `src/middleware.ts`
+- `src/app/manifest.ts`
+- `src/app/login/page.tsx`
+- `src/app/api/auth/[...nextauth]/route.ts`
+- `vitest.config.ts`
+- `playwright.config.ts`
+- `tests/setup.ts`
+- `tests/contexts/application/*.test.ts`
+- `tests/app/*.spec.ts`
+- `public/icon-*.png`
+- `public/sw.js`

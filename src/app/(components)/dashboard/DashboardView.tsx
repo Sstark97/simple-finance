@@ -35,11 +35,12 @@ const getYearMonth = (date: Date) => date.toISOString().slice(0, 7);
 export default async function DashboardView({
   searchParams,
 }: {
-  searchParams?: {
+  searchParams?: Promise<{
     month?: string;
-  };
+  }>;
 }) {
-  const selectedMonthParam = searchParams?.month;
+  const params = await searchParams;
+  const selectedMonthParam = params?.month;
 
   let dateToFetch: Date;
   let selectedMonthString: string;
