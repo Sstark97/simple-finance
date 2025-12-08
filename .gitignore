@@ -49,6 +49,5 @@ out/
 
 # Custom ignores
 .agents/
-.gemini/
 GEMINI.md
 /credentials.json

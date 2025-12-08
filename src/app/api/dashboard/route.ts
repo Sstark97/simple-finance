@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { GetCurrentDashboard } from '../../../application/use-cases/GetCurrentDashboard';
-import { GoogleSheetsDashboardRepository } from '../../../infrastructure/repositories/GoogleSheetsDashboardRepository';
-import { SPREADSHEET_ID } from '../../../infrastructure/google/sheetsClient';
+import { GetCurrentDashboard } from '@/lib/application/use-cases/GetCurrentDashboard';
+import { GoogleSheetsDashboardRepository } from '@/lib/infrastructure/repositories/GoogleSheetsDashboardRepository';
+import { SPREADSHEET_ID } from '@/lib/infrastructure/google/sheetsClient';
 
 export async function GET(request: NextRequest) {
   if (!SPREADSHEET_ID) {

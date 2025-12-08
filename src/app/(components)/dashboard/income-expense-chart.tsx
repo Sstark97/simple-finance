@@ -8,7 +8,7 @@ import {
   FinanceCardTitle,
   FinanceCardDescription,
   FinanceCardContent,
-} from "@/components/ui/finance-card"
+} from "@/app/(components)/ui/finance-card"
 import { cn } from "@/lib/utils"
 
 const INCOME_COLOR = "#10B981"

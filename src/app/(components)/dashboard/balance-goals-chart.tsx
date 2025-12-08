@@ -8,7 +8,7 @@ import {
   FinanceCardTitle,
   FinanceCardDescription,
   FinanceCardContent,
-} from "@/components/ui/finance-card"
+} from "@/app/(components)/ui/finance-card"
 import { cn } from "@/lib/utils"
 
 const BALANCE_COLOR = "#3b82f6" // Un azul más vivo
@@ -87,7 +87,7 @@ export function BalanceGoalsChart({ balance, savings, investment }: BalanceGoals
                 animationBegin={0}
                 animationDuration={1000}
                 animationEasing="ease-out"
-                onMouseEnter={(data) => setHoveredBar(data.name)}
+                onMouseEnter={(data) => setHoveredBar(data.name || null)}
                 onMouseLeave={() => setHoveredBar(null)}
               >
                 {data.map((entry) => (

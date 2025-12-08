@@ -1,35 +1,22 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import type { NetWorth } from '../../domain/models/NetWorth';
 import Link from 'next/link';
+import type { NetWorth } from '@/lib/domain/models/NetWorth';
+import { GetNetWorthHistory } from '@/lib/application/use-cases/GetNetWorthHistory';
+import { GoogleSheetsNetWorthRepository } from '@/lib/infrastructure/repositories/GoogleSheetsNetWorthRepository';
+import { NetWorthTable } from '@/app/(components)/dashboard/networth-table';
 
-export default function PatrimonioPage() {
-  const [history, setHistory] = useState<NetWorth[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export default async function PatrimonioPage(): Promise<React.ReactNode> {
+  let history: NetWorth[] = [];
+  let error: string | null = null;
 
-  useEffect(() => {
-    async function fetchNetWorthHistory() {
-      try {
-        setLoading(true);
-        const res = await fetch('/api/networth');
-        if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(errorData.error || errorData.message || 'Failed to fetch net worth history');
-        }
-        const data: NetWorth[] = await res.json();
-        setHistory(data);
-        setError(null);
-      } catch (err: any) {
-        setError(err.message);
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchNetWorthHistory();
-  }, []);
+  try {
+    const netWorthRepository = new GoogleSheetsNetWorthRepository();
+    const getNetWorthHistoryUseCase = new GetNetWorthHistory(netWorthRepository);
+    history = await getNetWorthHistoryUseCase.execute();
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    error = message;
+    console.error('Error fetching net worth history:', err);
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4 bg-gray-100">
@@ -41,49 +28,9 @@ export default function PatrimonioPage() {
           </Link>
         </div>
 
-        {loading && <div className="text-center p-4 text-blue-600">Cargando historial de patrimonio...</div>}
         {error && <div className="text-center p-4 text-red-600 bg-red-50 rounded-md"><strong>Error:</strong> {error}</div>}
-        
-        {!loading && !error && (
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Mes
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Hucha (€)
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Invertido (€)
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Total (€)
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {history.map((item, index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {new Date(item.mes).toLocaleDateString('es-ES', { month: 'long', year: 'numeric', timeZone: 'UTC' })}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
-                      {item.hucha.toFixed(2)} €
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
-                      {item.invertido.toFixed(2)} €
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-green-600 font-semibold">
-                      {item.total.toFixed(2)} €
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+
+        {!error && <NetWorthTable data={history} />}
       </div>
     </main>
   );

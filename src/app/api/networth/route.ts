@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { UpdateNetWorth } from '../../../application/use-cases/UpdateNetWorth';
-import { GetNetWorthHistory } from '../../../application/use-cases/GetNetWorthHistory';
-import { GoogleSheetsNetWorthRepository } from '../../../infrastructure/repositories/GoogleSheetsNetWorthRepository';
+import { UpdateNetWorth } from '@/lib/application/use-cases/UpdateNetWorth';
+import { GetNetWorthHistory } from '@/lib/application/use-cases/GetNetWorthHistory';
+import { GoogleSheetsNetWorthRepository } from '@/lib/infrastructure/repositories/GoogleSheetsNetWorthRepository';
 
 export async function GET() {
   try {

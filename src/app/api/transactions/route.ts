@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import { AddTransaction } from '../../../application/use-cases/AddTransaction';
-import { GetTransactions } from '../../../application/use-cases/GetTransactions';
-import { GoogleSheetsTransactionRepository } from '../../../infrastructure/repositories/GoogleSheetsTransactionRepository';
-import { Transaction } from '../../../domain/models/Transaction';
+import { AddTransaction } from '@/lib/application/use-cases/AddTransaction';
+import { GetTransactions } from '@/lib/application/use-cases/GetTransactions';
+import { GoogleSheetsTransactionRepository } from '@/lib/infrastructure/repositories/GoogleSheetsTransactionRepository';
+import { Transaction } from '@/lib/domain/models/Transaction';
 
 export async function GET() {
   try {
@@ -12,9 +12,10 @@ export async function GET() {
     const transactions = await getTransactionsUseCase.execute();
 
     return NextResponse.json(transactions, { status: 200 });
-  } catch (error: any) {
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error fetching transactions:', error);
-    return NextResponse.json({ message: 'Error fetching transactions', error: error.message }, { status: 500 });
+    return NextResponse.json({ message: 'Error fetching transactions', error: message }, { status: 500 });
   }
 }
 
@@ -41,7 +42,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json(addedTransaction, { status: 201 });
   } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error adding transaction:', error);
-    return NextResponse.json({ message: 'Error adding transaction', error: error.message }, { status: 500 });
+    return NextResponse.json({ message: 'Error adding transaction', error: message }, { status: 500 });
   }
 }

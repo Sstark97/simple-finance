@@ -3,8 +3,8 @@
  * @description Endpoint para actualizar la configuración mensual del dashboard.
  */
 import { NextResponse } from 'next/server';
-import { UpdateMonthlySettings } from '../../../application/use-cases/UpdateMonthlySettings';
-import { GoogleSheetsDashboardRepository } from '../../../infrastructure/repositories/GoogleSheetsDashboardRepository';
+import { UpdateMonthlySettings } from '@/lib/application/use-cases/UpdateMonthlySettings';
+import { GoogleSheetsDashboardRepository } from '@/lib/infrastructure/repositories/GoogleSheetsDashboardRepository';
 
 export async function PUT(request: Request) {
   try {
@@ -30,7 +30,8 @@ export async function PUT(request: Request) {
 
     return NextResponse.json(updatedDashboard, { status: 200 });
   } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error updating monthly settings:', error);
-    return NextResponse.json({ message: 'Error updating monthly settings', error: error.message }, { status: 500 });
+    return NextResponse.json({ message: 'Error updating monthly settings', error: message }, { status: 500 });
   }
 }
