@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/app/(components)/theme-provider";
+import { ThemeProvider } from "@/app/components/theme-provider";
+import { PWAProvider } from "@/app/components/PWAProvider";
 import { cn } from "@/lib/utils";
 
 const fontSans = Inter({
@@ -12,18 +13,29 @@ const fontSans = Inter({
 export const metadata: Metadata = {
   title: "Simple Finance - Gestión de Finanzas Personales",
   description: "Aplicación moderna para gestionar tus finanzas personales de forma inteligente y eficiente.",
+  manifest: "/manifest.json",
   icons: {
     icon: [
       {
-        url: "/icon.svg",
-        type: "image/svg+xml",
+        url: "/icons/icon-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
       },
     ],
+    apple: [
+      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-192x192.png", sizes: "152x152", type: "image/png" },
+    ],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Simple Finance",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0A2A54",
+  themeColor: "#166534",
   width: "device-width",
   initialScale: 1,
 }
@@ -47,6 +59,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
         >
+          <PWAProvider />
           {children}
         </ThemeProvider>
       </body>

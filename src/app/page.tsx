@@ -1,4 +1,4 @@
-import DashboardView from "@/app/(components)/dashboard/DashboardView";
+import DashboardView from "@/app/components/dashboard/DashboardView";
 
 export default function DashboardPage({
   searchParams,
