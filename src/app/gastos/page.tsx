@@ -1,8 +1,11 @@
-import Link from 'next/link';
 import type { Transaction } from '@/lib/domain/models/Transaction';
 import { GetTransactions } from '@/lib/application/use-cases/GetTransactions';
 import { GoogleSheetsTransactionRepository } from '@/lib/infrastructure/repositories/GoogleSheetsTransactionRepository';
-import { TransactionsTable } from '@/app/(components)/dashboard/transactions-table';
+import { ExpenseHeader } from '@/app/components/expenses/expense-header';
+import { ExpenseSummary } from '@/app/components/expenses/expense-summary';
+import { ExpensesFilteredView } from '@/app/components/expenses/expenses-filtered-view';
+import { transformTransactionToExpense } from '@/app/components/expenses/utils';
+import type { Expense } from '@/app/components/expenses/utils';
 
 export default async function GastosPage(): Promise<React.ReactNode> {
   let transactions: Transaction[] = [];
@@ -18,19 +21,42 @@ export default async function GastosPage(): Promise<React.ReactNode> {
     console.error('Error fetching transactions:', err);
   }
 
+  // Transform transactions to expenses
+  const expenses: Expense[] = transactions.map((transaction, index) =>
+    transformTransactionToExpense(transaction, index)
+  );
+
+  // Calculate current month summary (filter by current month)
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
+
+  const currentMonthExpenses = transactions.filter((t) => {
+    const transactionDate = t.fechaCobro;
+    return transactionDate.getFullYear() === currentYear && transactionDate.getMonth() === currentMonth;
+  });
+
+  const totalAmount = currentMonthExpenses.reduce((sum, t) => sum + t.importe, 0);
+  const transactionCount = currentMonthExpenses.length;
+
   return (
-    <main className="flex min-h-screen flex-col items-center p-4 bg-gray-100">
-      <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 space-y-6">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-3xl font-bold text-gray-800">Historial de Gastos</h1>
-          <Link href="/" className="text-blue-600 hover:underline">
-            &larr; Volver al Dashboard
-          </Link>
-        </div>
+    <main className="min-h-screen bg-background">
+      <div className="container mx-auto p-4 sm:p-6 lg:p-8 space-y-8 max-w-6xl">
+        {error && (
+          <div className="rounded-lg border border-destructive bg-destructive/10 p-4">
+            <p className="text-sm font-medium text-destructive">
+              <strong>Error:</strong> {error}
+            </p>
+          </div>
+        )}
 
-        {error && <div className="text-center p-4 text-red-600 bg-red-50 rounded-md"><strong>Error:</strong> {error}</div>}
-
-        {!error && <TransactionsTable data={transactions} />}
+        {!error && (
+          <>
+            <ExpenseHeader />
+            <ExpenseSummary totalAmount={totalAmount} transactionCount={transactionCount} />
+            <ExpensesFilteredView expenses={expenses} />
+          </>
+        )}
       </div>
     </main>
   );

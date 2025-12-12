@@ -1,37 +1,39 @@
-import Link from 'next/link';
-import type { NetWorth } from '@/lib/domain/models/NetWorth';
-import { GetNetWorthHistory } from '@/lib/application/use-cases/GetNetWorthHistory';
-import { GoogleSheetsNetWorthRepository } from '@/lib/infrastructure/repositories/GoogleSheetsNetWorthRepository';
-import { NetWorthTable } from '@/app/(components)/dashboard/networth-table';
+import type {ReactNode} from "react";
+import {GetNetWorthHistory} from '@/lib/application/use-cases/GetNetWorthHistory';
+import {GoogleSheetsNetWorthRepository} from '@/lib/infrastructure/repositories/GoogleSheetsNetWorthRepository';
+import {PatrimonioHeader} from '@/app/components/patrimonio/patrimonio-header';
+import {PatrimonioKPIs} from '@/app/components/patrimonio/patrimonio-kpis';
+import {PatrimonioLineChart} from '@/app/components/patrimonio/patrimonio-line-chart';
+import {PatrimonioTable} from '@/app/components/patrimonio/patrimonio-table';
+import {PkiCalculator} from "@/lib/domain/services/kpi-calculator";
 
-export default async function PatrimonioPage(): Promise<React.ReactNode> {
-  let history: NetWorth[] = [];
-  let error: string | null = null;
-
-  try {
+export default async function PatrimonioPage(): Promise<ReactNode> {
     const netWorthRepository = new GoogleSheetsNetWorthRepository();
     const getNetWorthHistoryUseCase = new GetNetWorthHistory(netWorthRepository);
-    history = await getNetWorthHistoryUseCase.execute();
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Unknown error';
-    error = message;
-    console.error('Error fetching net worth history:', err);
-  }
+    const { patrimonio, error } = await getNetWorthHistoryUseCase.execute();
+    const { currentTotal, previousTotal, growthPercentage } = new PkiCalculator(patrimonio);
 
-  return (
-    <main className="flex min-h-screen flex-col items-center p-4 bg-gray-100">
-      <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 space-y-6">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-3xl font-bold text-gray-800">Historial de Patrimonio</h1>
-          <Link href="/" className="text-blue-600 hover:underline">
-            &larr; Volver al Dashboard
-          </Link>
-        </div>
+    return (
+        <main className="min-h-screen bg-background">
+            <div className="container mx-auto p-4 sm:p-6 lg:p-8 space-y-8 max-w-6xl">
+                {error && (
+                    <div className="rounded-lg border border-destructive bg-destructive/10 p-4">
+                        <p className="text-sm font-medium text-destructive">
+                            <strong>Error:</strong> {error}
+                        </p>
+                    </div>
+                )}
 
-        {error && <div className="text-center p-4 text-red-600 bg-red-50 rounded-md"><strong>Error:</strong> {error}</div>}
-
-        {!error && <NetWorthTable data={history} />}
-      </div>
-    </main>
-  );
+                {!error && (
+                    <>
+                        <PatrimonioHeader/>
+                        <PatrimonioKPIs currentTotal={currentTotal} previousTotal={previousTotal}
+                                        growthPercentage={growthPercentage}/>
+                        <PatrimonioLineChart data={patrimonio}/>
+                        <PatrimonioTable data={patrimonio}/>
+                    </>
+                )}
+            </div>
+        </main>
+    );
 }
