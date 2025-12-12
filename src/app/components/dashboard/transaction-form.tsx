@@ -13,7 +13,7 @@ const initialState: FormState = {
   errors: {},
 };
 
-function SubmitButton() {
+function SubmitButton(): React.ReactNode {
   const { pending } = useFormStatus();
 
   return (
@@ -24,7 +24,7 @@ function SubmitButton() {
   );
 }
 
-export function TransactionForm() {
+export function TransactionForm(): React.ReactNode {
   const [state, formAction] = useActionState(addTransaction, initialState);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -66,7 +66,7 @@ export function TransactionForm() {
           aria-describedby="amount-error"
         />
         <div id="amount-error" aria-live="polite" aria-atomic="true">
-          {state.errors?.amount &&
+          {state.errors?.importe &&
             state.errors.importe.map((error: string) => (
               <p className="mt-1 text-xs text-red-500" key={error}>
                 {error}
@@ -83,7 +83,7 @@ export function TransactionForm() {
           aria-describedby="date-error"
         />
         <div id="date-error" aria-live="polite" aria-atomic="true">
-          {state.errors?.date &&
+          {state.errors?.fechaCobro &&
             state.errors.fechaCobro.map((error: string) => (
               <p className="mt-1 text-xs text-red-500" key={error}>
                 {error}

@@ -10,6 +10,7 @@ import {
   FinanceCardContent,
 } from "@/app/(components)/ui/finance-card"
 import { cn } from "@/lib/utils"
+import { formatCurrency } from "@/lib/utils/formatting"
 
 const BALANCE_COLOR = "#3b82f6" // Un azul más vivo
 const GOALS_COLOR = "#F59E0B"
@@ -20,8 +21,8 @@ interface BalanceGoalsChartProps {
   investment: number
 }
 
-export function BalanceGoalsChart({ balance, savings, investment }: BalanceGoalsChartProps) {
-  const [isLoaded, setIsLoaded] = useState(false)
+export function BalanceGoalsChart({ balance, savings, investment }: BalanceGoalsChartProps): React.ReactNode {
+  const [isLoaded, setIsLoaded] = useState<boolean>(false)
   const [hoveredBar, setHoveredBar] = useState<string | null>(null)
 
   useEffect(() => {
@@ -35,9 +36,6 @@ export function BalanceGoalsChart({ balance, savings, investment }: BalanceGoals
     { name: "Disponible para Objetivos", value: balance, color: BALANCE_COLOR },
     { name: "Objetivos", value: goals, color: GOALS_COLOR },
   ]
-
-  const formatCurrency = (value: number) =>
-    new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(value)
 
   return (
     <FinanceCard
@@ -53,8 +51,8 @@ export function BalanceGoalsChart({ balance, savings, investment }: BalanceGoals
         </FinanceCardDescription>
       </FinanceCardHeader>
       <FinanceCardContent>
-        <div className="h-[280px]">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="h-[280px] w-full">
+          <ResponsiveContainer width="100%" height={280} minHeight={280}>
             <BarChart data={data} layout="vertical" margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
               <XAxis type="number" hide />
               <YAxis

@@ -21,7 +21,7 @@ const initialState: NetWorthFormState = {
   errors: {},
 };
 
-function SubmitButton() {
+function SubmitButton(): React.ReactNode {
   const { pending } = useFormStatus();
 
   return (
@@ -32,7 +32,7 @@ function SubmitButton() {
   );
 }
 
-export function NetWorthForm({ initialNetWorth }: NetWorthFormProps) {
+export function NetWorthForm({ initialNetWorth }: NetWorthFormProps): React.ReactNode {
   const [state, formAction] = useActionState(updateNetWorth, initialState);
   const formRef = useRef<HTMLFormElement>(null);
 

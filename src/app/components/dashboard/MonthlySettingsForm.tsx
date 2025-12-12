@@ -22,7 +22,7 @@ const initialState: MonthlySettingsFormState = {
   errors: {},
 };
 
-function SubmitButton() {
+function SubmitButton(): React.ReactNode {
   const { pending } = useFormStatus();
 
   return (
@@ -33,7 +33,7 @@ function SubmitButton() {
   );
 }
 
-export function MonthlySettingsForm({ initialMonthlySettings }: MonthlySettingsFormProps) {
+export function MonthlySettingsForm({ initialMonthlySettings }: MonthlySettingsFormProps): React.ReactNode {
   const [state, formAction] = useActionState(updateMonthlySettings, initialState);
   const formRef = useRef<HTMLFormElement>(null);
 

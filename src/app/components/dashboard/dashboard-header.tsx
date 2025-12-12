@@ -1,8 +1,11 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'; // Import necessary hooks
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { cn } from "@/lib/utils"
+import { authClient } from '@/lib/infrastructure/auth/client';
+import { Button } from "@/app/(components)/ui/button";
+import { LogOut } from 'lucide-react';
 
 interface DashboardHeaderProps {
   selectedMonth: string;
@@ -18,11 +21,17 @@ export function DashboardHeader({ selectedMonth }: DashboardHeaderProps) {
     setIsLoaded(true)
   }, [])
 
-  const handleMonthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMonthChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const newMonth = e.target.value;
     const params = new URLSearchParams(searchParams.toString());
     params.set('month', newMonth);
     router.push(`${pathname}?${params.toString()}`);
+  };
+
+  const handleLogout = async (): Promise<void> => {
+    await authClient.signOut();
+    router.push('/login');
+    router.refresh();
   };
 
   return (
@@ -43,6 +52,14 @@ export function DashboardHeader({ selectedMonth }: DashboardHeaderProps) {
               onChange={handleMonthChange}
               className="block w-full sm:w-auto rounded-md border-input bg-background p-2 text-sm shadow-sm focus:border-primary focus:ring-primary"
           />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleLogout}
+            title="Cerrar sesión"
+          >
+            <LogOut className="h-4 w-4" />
+          </Button>
         </div>
       </div>
        <p className="text-muted-foreground text-sm">

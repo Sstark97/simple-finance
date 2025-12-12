@@ -4,6 +4,7 @@ import Link from "next/link";
 import { GetCurrentDashboard } from '@/lib/application/use-cases/GetCurrentDashboard';
 import { GoogleSheetsDashboardRepository } from '@/lib/infrastructure/repositories/GoogleSheetsDashboardRepository';
 import { SPREADSHEET_ID } from '@/lib/infrastructure/google/sheetsClient';
+import { handleGoogleSheetsError } from '@/lib/utils/errorHandler';
 import { MonthlySettingsForm } from './MonthlySettingsForm';
 import { NetWorthForm } from './NetWorthForm';
 
@@ -75,21 +76,11 @@ export default async function DashboardView({
         showMessage = true;
       }
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error detallado al obtener datos del dashboard:', error);
 
-      if (error.code === 403) {
-        errorMessage =
-          'Error de permisos (403): La API de Google Sheets no está activada en tu proyecto de GCP o la cuenta de servicio no tiene permisos de "Editor" en la hoja de cálculo.';
-      } else if (error.code === 404) {
-        errorMessage = `No se pudo encontrar la hoja de cálculo con el ID proporcionado (404). Verifica que el SPREADSHEET_ID sea correcto.`;
-      } else if (error.message?.includes('file not found')) {
-        errorMessage = 'No se encontró el fichero `credentials.json`. Asegúrate de que está en la raíz del proyecto.';
-      } else if (error.message?.includes('invalid_grant')) {
-          errorMessage = 'Error de autenticación (invalid_grant). Revisa que el fichero `credentials.json` sea correcto y que la hora del sistema del servidor sea correcta.'
-      } else {
-          errorMessage = 'Ocurrió un error al cargar los datos del dashboard.';
-      }
+      const { message } = handleGoogleSheetsError(error);
+      errorMessage = message;
       showMessage = true;
     }
   }
@@ -97,9 +88,9 @@ export default async function DashboardView({
   // Pre-fill forms with fetched data (for server components, this data will be rendered directly)
   const initialMonthlySettings = {
     month: dashboardData ? getYearMonth(dashboardData.mes) : getYearMonth(new Date()),
-    ingresos: dashboardData?.ingresos || 0,
-    ahorro: dashboardData?.ahorro || 0,
-    inversion: dashboardData?.inversion || 0,
+    ingresos: dashboardData?.ingresos ?? 0,
+    ahorro: dashboardData?.ahorro ?? 0,
+    inversion: dashboardData?.inversion ?? 0,
   };
 
   const initialNetWorth = {
@@ -109,11 +100,11 @@ export default async function DashboardView({
   };
   
   // Derived state
-  const ingresos = dashboardData?.ingresos || 0;
-  const gastos = dashboardData?.gastos || 0;
-  const ahorro = dashboardData?.ahorro || 0;
-  const inversion = dashboardData?.inversion || 0;
-  const dineroLibre = dashboardData?.dineroLibre || 0;
+  const ingresos = dashboardData?.ingresos ?? 0;
+  const gastos = dashboardData?.gastos ?? 0;
+  const ahorro = dashboardData?.ahorro ?? 0;
+  const inversion = dashboardData?.inversion ?? 0;
+  const dineroLibre = dashboardData?.dineroLibre ?? 0;
   const balance = ingresos - gastos;
 
   // Main JSX from v0 file, but with real data

@@ -10,6 +10,7 @@ import {
   FinanceCardContent,
 } from "@/app/(components)/ui/finance-card"
 import { cn } from "@/lib/utils"
+import { formatCurrency } from "@/lib/utils/formatting"
 
 const INCOME_COLOR = "#10B981"
 const EXPENSE_COLOR = "#EF4444"
@@ -19,8 +20,8 @@ interface IncomeExpenseChartProps {
   expenses: number
 }
 
-export function IncomeExpenseChart({ income, expenses }: IncomeExpenseChartProps) {
-  const [isLoaded, setIsLoaded] = useState(false)
+export function IncomeExpenseChart({ income, expenses }: IncomeExpenseChartProps): React.ReactNode {
+  const [isLoaded, setIsLoaded] = useState<boolean>(false)
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
   useEffect(() => {
@@ -33,10 +34,7 @@ export function IncomeExpenseChart({ income, expenses }: IncomeExpenseChartProps
     { name: "Gastos", value: expenses, color: EXPENSE_COLOR },
   ]
 
-  const balance = income - expenses; // Calculate balance
-
-  const formatCurrency = (value: number) =>
-    new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(value)
+  const balance = income - expenses
 
   return (
     <FinanceCard
@@ -50,8 +48,8 @@ export function IncomeExpenseChart({ income, expenses }: IncomeExpenseChartProps
         <FinanceCardDescription>Distribución del mes actual</FinanceCardDescription>
       </FinanceCardHeader>
       <FinanceCardContent>
-        <div className="h-[280px] relative">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="h-[280px] w-full relative">
+          <ResponsiveContainer width="100%" height={280} minHeight={280}>
             <PieChart>
               <Pie
                 data={data}
