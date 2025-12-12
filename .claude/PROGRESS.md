@@ -38,7 +38,7 @@ La estructura de carpetas del proyecto, alineada con Next.js y la Arquitectura H
 ├── app/                                                                                 
 │   ├── api/                                                                             
 │   │   └── [...] # Endpoints de Next.js que conectan el frontend con los casos de uso   
-│   ├── (components)/                                                                    
+│   ├── components/                                                                    
 │   │   └── ui/      # Componentes de UI reutilizables (botones, inputs, etc.)           
 │   │   └── [...]    # Componentes específicos de cada vista/página                      
 │   └── page.tsx     # Página principal (Dashboard) y otras páginas                      
@@ -144,9 +144,9 @@ ara actualizar los `searchParams` de la URL al cambiar el mes.
 nando como se esperaba. Se requiere depuración en el Client Component `DashboardHeader` y
  en la propagación de `searchParams` al Server Component `DashboardView`.                 
     *   **Errores TypeScript Pendientes:**                                               
-        *   Errores de tipado en `src/app/(components)/ui/chart.tsx` relacionados con `rec
+        *   Errores de tipado en `src/app/components/ui/chart.tsx` relacionados con `rec
 harts`.                                                                                 
-        *   Error de importación en `src/app/(components)/ui/sidebar.tsx` (falta `SheetDe
+        *   Error de importación en `src/app/components/ui/sidebar.tsx` (falta `SheetDe
 scription`).                                                                             
         *   Errores de tipo `unknown` en los catch de las rutas API.                     
-        *   Redundancia de `size` en `src/app/(components)/ui/pagination.tsx`.
+        *   Redundancia de `size` en `src/app/components/ui/pagination.tsx`.

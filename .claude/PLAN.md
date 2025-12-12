@@ -49,7 +49,7 @@ El proyecto tiene problemas significativos de arquitectura y calidad de código.
 
 #### 1.1 sidebar.tsx - Añadir import
 ```typescript
-import { SheetDescription } from '@/app/(components)/ui/sheet'
+import { SheetDescription } from '@/app/components/ui/sheet'
 ```
 
 #### 1.2 chart.tsx - Corregir tipos Recharts
@@ -63,8 +63,8 @@ catch (error) {
 ```
 
 **Archivos:**
-- `src/app/(components)/ui/sidebar.tsx`
-- `src/app/(components)/ui/chart.tsx`
+- `src/app/components/ui/sidebar.tsx`
+- `src/app/components/ui/chart.tsx`
 - `src/app/api/dashboard/settings/route.ts`
 - `src/app/api/transactions/route.ts`
 
@@ -99,7 +99,7 @@ Usar `<form>` con Server Action para cambio de mes en lugar de `router.push`.
 **Archivos a modificar:**
 - `src/app/gastos/page.tsx`
 - `src/app/patrimonio/page.tsx`
-- `src/app/(components)/dashboard/dashboard-header.tsx`
+- `src/app/components/dashboard/dashboard-header.tsx`
 
 ---
 
@@ -212,12 +212,12 @@ tests/
 
 #### 4.5.1 Adaptar página de Gastos
 - Aplicar estilos y componentes V0 a `src/app/gastos/page.tsx`
-- Actualizar `src/app/(components)/dashboard/transactions-table.tsx` con diseño V0
+- Actualizar `src/app/components/dashboard/transactions-table.tsx` con diseño V0
 - Asegurar consistencia con el dashboard
 
 #### 4.5.2 Adaptar página de Patrimonio
 - Aplicar estilos y componentes V0 a `src/app/patrimonio/page.tsx`
-- Actualizar `src/app/(components)/dashboard/networth-table.tsx` con diseño V0
+- Actualizar `src/app/components/dashboard/networth-table.tsx` con diseño V0
 - Asegurar consistencia con el dashboard
 
 **NOTA:** El usuario proporcionará el código/diseño de V0 cuando se llegue a esta fase.
@@ -225,8 +225,8 @@ tests/
 **Archivos a modificar:**
 - `src/app/gastos/page.tsx`
 - `src/app/patrimonio/page.tsx`
-- `src/app/(components)/dashboard/transactions-table.tsx`
-- `src/app/(components)/dashboard/networth-table.tsx`
+- `src/app/components/dashboard/transactions-table.tsx`
+- `src/app/components/dashboard/networth-table.tsx`
 
 ---
 
@@ -369,13 +369,46 @@ Crear `src/app/login/page.tsx` con botón de Google Sign-In.
 
 ### 🐛 Bug Fixes Post-Refactoring
 - ✓ Corregido searchParams en Next.js 16 (ahora es Promise, requiere await)
-  - Archivos: `src/app/page.tsx`, `src/app/(components)/dashboard/DashboardView.tsx`
+  - Archivos: `src/app/page.tsx`, `src/app/components/dashboard/DashboardView.tsx`
 - ✓ Corregidas funciones de parseo de fechas para usar formato español
   - `formatMonthForSheet()`: ahora devuelve "diciembre de 2025" (era "12/2025")
   - `parseMonthYearString()`: ahora parsea "diciembre de 2025" (era "12/2025")
   - Archivo: `src/lib/utils/dateParser.ts`
 
-### 🔄 PENDIENTE: Fases 4.5-6
+### ✅ Fase 4.5: COMPLETADA
+- ✓ Arreglado parseo de fechas (soporta formato español "D de mes de YYYY")
+- ✓ Arreglado parseo de datos de NetWorth (rango A:D y cálculo automático de total)
+- ✓ Creados componentes de gastos (ExpenseHeader, ExpenseSummary, ExpenseFilters, ExpenseDataGrid, ExpensesFilteredView)
+- ✓ Página gastos adaptada con diseño V0 y datos reales
+- ✓ Creados componentes de patrimonio (PatrimonioHeader, PatrimonioKPIs, PatrimonioLineChart, PatrimonioTable)
+- ✓ Página patrimonio adaptada con diseño V0 y datos reales
+- ✓ Tests de Playwright actualizados para nuevo UI
+
+### ✅ Fase 6: COMPLETADA
+- ✓ Instalado BetterAuth y better-sqlite3
+- ✓ Creado configuración servidor: `src/lib/infrastructure/auth/better-auth.config.ts`
+- ✓ Creado cliente React: `src/lib/infrastructure/auth/client.ts`
+- ✓ Creado API route handler: `src/app/api/auth/[...auth]/route.ts`
+- ✓ Creada página de login: `src/app/login/page.tsx`
+- ✓ Implementada arquitectura hexagonal para auth:
+  - Domain model: `src/lib/domain/models/User.ts`
+  - Port interface: `src/lib/application/ports/IAuthenticationService.ts`
+  - Use case: `src/lib/application/use-cases/VerifyAuthentication.ts`
+  - Adapter: `src/lib/infrastructure/adapters/BetterAuthAdapter.ts`
+- ✓ Creado middleware simplificado basado en cookies: `src/middleware.ts`
+- ✓ Creado auth guard para API routes: `src/lib/utils/authGuard.ts`
+- ✓ Protegidos todos los API routes con autenticación + autorización
+- ✓ Configurado `.env.example` con variables requeridas
+- ✓ Agregado `auth.db` a `.gitignore`
+- ✓ Tests unitarios (36 tests):
+  - `tests/contexts/application/VerifyAuthentication.test.ts` (8 tests)
+  - `tests/contexts/infrastructure/BetterAuthAdapter.test.ts` (21 tests)
+- ✓ Test E2E: `tests/app/authentication.spec.ts`
+- ✓ Documentación completa de arquitectura: `docs/authentication-architecture.md`
+- ✓ Build exitoso, 0 errores TypeScript
+- ✓ Todos los tests pasando (42 tests unitarios)
+
+### 🔄 PENDIENTE: Fase 5
 
 ## Orden de Ejecución
 
@@ -385,9 +418,9 @@ Crear `src/app/login/page.tsx` con botón de Google Sign-In.
 | 2 | Server Components refactor | ✅ COMPLETADA |
 | 3 | Clean architecture | ✅ COMPLETADA |
 | 4 | Testing setup + tests | ✅ COMPLETADA |
-| 4.5 | Adapt UI to V0 design | ⏳ PENDIENTE |
+| 4.5 | Adapt UI to V0 design | ✅ COMPLETADA |
 | 5 | PWA implementation | ⏳ PENDIENTE |
-| 6 | Authentication | ⏳ PENDIENTE |
+| 6 | Authentication | ✅ COMPLETADA |
 
 ---
 
@@ -405,13 +438,13 @@ Crear `src/app/login/page.tsx` con botón de Google Sign-In.
 ## Archivos Totales a Modificar/Crear
 
 ### Modificar (existentes):
-- `src/app/(components)/ui/sidebar.tsx`
-- `src/app/(components)/ui/chart.tsx`
+- `src/app/components/ui/sidebar.tsx`
+- `src/app/components/ui/chart.tsx`
 - `src/app/api/dashboard/settings/route.ts`
 - `src/app/api/transactions/route.ts`
 - `src/app/gastos/page.tsx`
 - `src/app/patrimonio/page.tsx`
-- `src/app/(components)/dashboard/dashboard-header.tsx`
+- `src/app/components/dashboard/dashboard-header.tsx`
 - `src/lib/infrastructure/repositories/*.ts` (3 archivos)
 - `src/lib/infrastructure/actions/*.ts` (3 archivos)
 - `package.json` (nuevas dependencias)

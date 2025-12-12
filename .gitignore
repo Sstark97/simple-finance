@@ -31,6 +31,7 @@ yarn-error.log*
 # Next.js build output
 .next
 .turbo/
+.vercel
 
 # Editor directories and files
 .idea
@@ -40,12 +41,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
-
-# Next.js specific
-.next
-.next/
-out/
-.vercel
 
 # Custom ignores
 .agents/
@@ -60,3 +55,5 @@ public/sw.js
 public/sw.js.map
 public/workbox-*.js
 public/workbox-*.js.map
+
+playwright-report/
