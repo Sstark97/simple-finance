@@ -35,14 +35,43 @@ export function parseMonthYearString(dateString: string): Date {
 }
 
 /**
- * Parses a day-month-year string (DD/MM/YYYY or DD/MM/YY) into a Date object
- * @param dateString - Date string in format "DD/MM/YYYY" or "DD/MM/YY"
+ * Parses a day-month-year string in various formats into a Date object
+ * @param dateString - Date string in format "DD/MM/YYYY", "DD/MM/YY", or "D de mes de YYYY"
  * @returns Date object in UTC
  */
 export function parseDayMonthYearString(dateString: string): Date {
+  const monthNames = [
+    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+  ];
+
+  // Check if it's in Spanish long format: "2 de diciembre de 2025"
+  if (dateString.includes(' de ')) {
+    const parts = dateString.split(' de ');
+    if (parts.length === 3) {
+      const day = parseInt(parts[0], 10);
+      const monthName = parts[1].toLowerCase();
+      const year = parseInt(parts[2], 10);
+      const monthIndex = monthNames.indexOf(monthName);
+
+      if (monthIndex === -1) {
+        throw new Error(`Invalid month name: ${monthName}. Must be a Spanish month name`);
+      }
+      if (isNaN(day) || day < 1 || day > 31) {
+        throw new Error(`Invalid day: ${parts[0]}. Must be between 1 and 31`);
+      }
+      if (isNaN(year)) {
+        throw new Error(`Invalid year: ${parts[2]}`);
+      }
+
+      return new Date(Date.UTC(year, monthIndex, day));
+    }
+  }
+
+  // Otherwise, try DD/MM/YYYY format
   const parts = dateString.split('/');
   if (parts.length !== 3) {
-    throw new Error(`Invalid date format: ${dateString}. Expected DD/MM/YYYY or DD/MM/YY`);
+    throw new Error(`Invalid date format: ${dateString}. Expected DD/MM/YYYY, DD/MM/YY, or "D de mes de YYYY"`);
   }
 
   const day = parseInt(parts[0], 10);

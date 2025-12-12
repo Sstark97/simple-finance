@@ -20,7 +20,7 @@ export const SHEET_CONFIG = {
   /** Net worth/patrimony sheet */
   networth: {
     name: 'Patrimonio',
-    range: 'A:B',
+    range: 'A:D',
   },
 } as const;
 

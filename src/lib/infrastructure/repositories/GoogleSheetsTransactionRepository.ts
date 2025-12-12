@@ -15,12 +15,12 @@ export class GoogleSheetsTransactionRepository implements TransactionRepository 
    * @returns Objeto Transaction.
    */
   private mapRowToTransaction(row: string[]): Transaction {
-    const amountStr = row[2] || '0';
+    const amountStr = row[2] ?? '0';
     return {
       fechaCobro: parseDayMonthYearString(row[0]), // Usa la nueva función de parseo
-      concepto: row[1] || '',
+      concepto: row[1] ?? '',
       importe: parseFloat(amountStr.replace(',', '.')),
-      categoria: row[3] || '',
+      categoria: row[3] ?? '',
     };
   }
   
@@ -56,6 +56,28 @@ export class GoogleSheetsTransactionRepository implements TransactionRepository 
   }
 
   /**
+   * Valida si una fila es válida para ser procesada
+   * @param row Fila de Google Sheets
+   * @returns true si la fila es válida
+   */
+  private isValidRow(row: string[]): boolean {
+    if (!row || row.length === 0) return false;
+
+    // Filtrar filas completamente vacías
+    if (!row.some(cell => typeof cell === 'string' && cell.trim() !== '')) {
+      return false;
+    }
+
+    // Filtrar filas con errores de Google Sheets en la fecha
+    const firstCell = row[0];
+    if (!firstCell || firstCell.startsWith('#REF!') || firstCell.startsWith('#N/A') || firstCell.startsWith('#ERROR!')) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
    * Obtiene todas las transacciones.
    * @returns Un array con todas las transacciones.
    */
@@ -71,11 +93,18 @@ export class GoogleSheetsTransactionRepository implements TransactionRepository 
       return [];
     }
 
-    // Ignorar la primera fila (cabecera), filtrar filas completamente vacías
+    // Ignorar la primera fila (cabecera), filtrar filas inválidas y mapear el resto
     return rows
       .slice(1)
-      .filter(row => row && row.some(cell => typeof cell === 'string' && cell.trim() !== '')) // Asegurarse de que la fila no está vacía
-      .map(this.mapRowToTransaction)
-      .filter(transaction => !isNaN(transaction.fechaCobro.getTime())); // Filtrar transacciones con fecha inválida
+      .filter(row => this.isValidRow(row))
+      .map(row => {
+        try {
+          return this.mapRowToTransaction(row);
+        } catch (error) {
+          console.error('Error parsing transaction row:', row, error);
+          return null;
+        }
+      })
+      .filter((transaction): transaction is Transaction => transaction !== null && !isNaN(transaction.fechaCobro.getTime()));
   }
 }

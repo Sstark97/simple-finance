@@ -5,7 +5,6 @@
  * @description Server Action para actualizar el patrimonio neto.
  */
 
-import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { UpdateNetWorthSchema } from '@/lib/application/use-cases/UpdateNetWorth.schema';
 import { UpdateNetWorth } from '@/lib/application/use-cases/UpdateNetWorth';

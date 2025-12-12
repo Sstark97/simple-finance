@@ -21,11 +21,27 @@ export class GoogleSheetsNetWorthRepository implements NetWorthRepository {
     // Col B: HUCHA (Number)
     // Col C: INVERTIDO (Number)
     // Col D: TOTAL (Number)
+
+    // Parse numbers, handling both comma and dot as decimal separator
+    const parseNumber = (value: string): number => {
+      if (!value) return 0;
+      // Replace comma with dot for decimal separator and remove any non-numeric characters except dot
+      const cleaned = value.replace(/[^\d.,-]/g, '').replace(',', '.');
+      return parseFloat(cleaned) ?? 0;
+    };
+
+    const hucha = parseNumber(row[1]);
+    const invertido = parseNumber(row[2]);
+    const total = parseNumber(row[3]);
+
+    // If total is not provided or is 0, calculate it
+    const calculatedTotal = total !== 0 ? total : hucha + invertido;
+
     return {
       mes: parseMonthYearString(row[0]), // Ahora usa la nueva función de parseo
-      hucha: parseFloat(row[1]),
-      invertido: parseFloat(row[2]),
-      total: parseFloat(row[3]),
+      hucha,
+      invertido,
+      total: calculatedTotal,
     };
   }
 
@@ -171,6 +187,23 @@ export class GoogleSheetsNetWorthRepository implements NetWorthRepository {
   }
 
   /**
+   * Valida si una fila es válida para ser procesada
+   * @param row Fila de Google Sheets
+   * @returns true si la fila es válida
+   */
+  private isValidRow(row: string[]): boolean {
+    if (!row || row.length === 0) return false;
+
+    // Filtrar filas con errores de Google Sheets
+    const firstCell = row[0];
+    if (!firstCell || firstCell.startsWith('#REF!') || firstCell.startsWith('#N/A') || firstCell.startsWith('#ERROR!')) {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
    * Obtiene todo el historial de patrimonio neto.
    * @returns Un array con todo el historial de patrimonio neto.
    */
@@ -186,7 +219,18 @@ export class GoogleSheetsNetWorthRepository implements NetWorthRepository {
       return [];
     }
 
-    // Ignorar la primera fila (cabecera) y mapear el resto
-    return rows.slice(1).map(this.mapRowToNetWorth);
+    // Ignorar la primera fila (cabecera), filtrar filas inválidas y mapear el resto
+    return rows
+      .slice(1)
+      .filter(row => this.isValidRow(row))
+      .map(row => {
+        try {
+          return this.mapRowToNetWorth(row);
+        } catch (error) {
+          console.error('Error parsing row:', row, error);
+          return null;
+        }
+      })
+      .filter((networth): networth is NetWorth => networth !== null);
   }
 }

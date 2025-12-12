@@ -5,7 +5,6 @@
  * @description Server Action para gestionar las transacciones.
  */
 
-import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { AddTransactionSchema } from '@/lib/application/use-cases/AddTransaction.schema';
 import { AddTransaction } from '@/lib/application/use-cases/AddTransaction';
@@ -30,8 +29,17 @@ export async function addTransaction(prevState: FormState, formData: FormData): 
 
   // 2. Si la validación falla, devolver los errores inmediatamente.
   if (!validatedFields.success) {
+    const fieldErrors = validatedFields.error.flatten().fieldErrors;
+
+    // Map schema field names to transaction form field names
+    const mappedErrors: TransactionFormState['errors'] = {
+      concepto: fieldErrors.description,
+      importe: fieldErrors.amount,
+      fechaCobro: fieldErrors.date,
+    };
+
     return {
-      errors: validatedFields.error.flatten().fieldErrors,
+      errors: mappedErrors,
       message: 'Faltan campos por rellenar o hay errores. Por favor, revisa.',
     };
   }
