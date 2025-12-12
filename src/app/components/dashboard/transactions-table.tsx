@@ -1,9 +1,9 @@
 'use client';
 
-import type {TransactionRawData} from "@/lib/application/dtos/dtos";
+import type {TransactionRaw} from "@/lib/application/dtos/dtos";
 
 interface TransactionsTableProps {
-  data: TransactionRawData[];
+  data: TransactionRaw[];
 }
 
 export function TransactionsTable({ data }: TransactionsTableProps): React.ReactNode {
@@ -30,16 +30,16 @@ export function TransactionsTable({ data }: TransactionsTableProps): React.React
           {data.map((transaction, index) => (
             <tr key={index}>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {new Date(transaction.fechaCobro).toLocaleDateString('es-ES')}
+                {new Date(transaction.collectionDate).toLocaleDateString('es-ES')}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {transaction.concepto}
+                {transaction.concept}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {transaction.categoria}
+                {transaction.category}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-red-600 font-semibold">
-                {transaction.importe.toFixed(2)} €
+                {transaction.amount.toFixed(2)} €
               </td>
             </tr>
           ))}

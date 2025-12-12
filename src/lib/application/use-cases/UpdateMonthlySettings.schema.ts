@@ -5,13 +5,13 @@ import { z } from 'zod';
  * @description Define el esquema de validación para los datos de entrada al actualizar la configuración mensual.
  */
 export const UpdateMonthlySettingsSchema = z.object({
-  month: z.string().min(1, { message: 'Por favor, selecciona un mes.' }),
+  month: z.string().min(1, { message: 'Por favor, selecciona un month.' }),
   ingresos: z.coerce
-    .number({ invalid_type_error: 'Los ingresos deben ser un número.' })
-    .min(0, { message: 'Los ingresos no pueden ser negativos.' }),
+    .number({ invalid_type_error: 'Los income deben ser un número.' })
+    .min(0, { message: 'Los income no pueden ser negativos.' }),
   ahorro: z.coerce
-    .number({ invalid_type_error: 'El ahorro debe ser un número.' })
-    .min(0, { message: 'El ahorro no puede ser negativo.' }),
+    .number({ invalid_type_error: 'El saving debe ser un número.' })
+    .min(0, { message: 'El saving no puede ser negativo.' }),
   inversion: z.coerce
     .number({ invalid_type_error: 'La inversión debe ser un número.' })
     .min(0, { message: 'La inversión no puede ser negativa.' }),

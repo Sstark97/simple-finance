@@ -27,7 +27,7 @@ test.describe('Gastos Page', () => {
     await page.goto('/gastos');
 
     // Verify search input exists
-    const searchInput = page.getByPlaceholder(/buscar por concepto/i);
+    const searchInput = page.getByPlaceholder(/buscar por concept/i);
     await expect(searchInput).toBeVisible();
   });
 
@@ -43,7 +43,7 @@ test.describe('Gastos Page', () => {
   test('should filter transactions by search term', async ({ page }) => {
     await page.goto('/gastos');
 
-    const searchInput = page.getByPlaceholder(/buscar por concepto/i);
+    const searchInput = page.getByPlaceholder(/buscar por concept/i);
 
     // Type in search
     await searchInput.fill('test');

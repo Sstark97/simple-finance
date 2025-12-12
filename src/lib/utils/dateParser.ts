@@ -67,7 +67,7 @@ export function parseDateFromSheet(dateString: string): Date {
 
 /**
  * Parses a day-month-year string in various formats into a Date object
- * @param dateString - Date string in format "DD/MM/YYYY", "DD/MM/YY", or "D de mes de YYYY"
+ * @param dateString - Date string in format "DD/MM/YYYY", "DD/MM/YY", or "D de month de YYYY"
  * @returns Date object in UTC
  */
 export function parseDayMonthYearString(dateString: string): Date {
@@ -128,7 +128,7 @@ export function parseDayMonthYearString(dateString: string): Date {
 /**
  * Formats a Date object into Google Sheets month format in Spanish (e.g., "diciembre de 2025")
  * @param date - Date object to format
- * @returns String in format "mes de año" (e.g., "diciembre de 2025")
+ * @returns String in format "month de año" (e.g., "diciembre de 2025")
  */
 export function formatMonthForSheet(date: Date): string {
   const options: Intl.DateTimeFormatOptions = { month: 'long', year: 'numeric', timeZone: 'UTC' };

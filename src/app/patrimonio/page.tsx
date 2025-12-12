@@ -1,17 +1,17 @@
 import type {ReactNode} from "react";
 import {GetNetWorthHistory} from '@/lib/application/use-cases/GetNetWorthHistory';
 import {GoogleSheetsNetWorthRepository} from '@/lib/infrastructure/repositories/GoogleSheetsNetWorthRepository';
-import {PatrimonioHeader} from '@/app/components/patrimonio/patrimonio-header';
-import {PatrimonioKPIs} from '@/app/components/patrimonio/patrimonio-kpis';
-import {PatrimonioLineChart} from '@/app/components/patrimonio/patrimonio-line-chart';
-import {PatrimonioTable} from '@/app/components/patrimonio/patrimonio-table';
+import {HeritageHeader} from '@/app/components/heritage/heritage-header';
+import {HeritageKPIs} from '@/app/components/heritage/heritage-kpis';
+import {HeritageLineChart} from '@/app/components/heritage/heritage-line-chart';
+import {HeritageTable} from '@/app/components/heritage/heritage-table';
 import {PkiCalculator} from "@/lib/domain/services/kpi-calculator";
 
-export default async function PatrimonioPage(): Promise<ReactNode> {
+export default async function HeritagePage(): Promise<ReactNode> {
     const netWorthRepository = new GoogleSheetsNetWorthRepository();
     const getNetWorthHistoryUseCase = new GetNetWorthHistory(netWorthRepository);
-    const { patrimonio, error } = await getNetWorthHistoryUseCase.execute();
-    const { currentTotal, previousTotal, growthPercentage } = new PkiCalculator(patrimonio);
+    const { heritage, error } = await getNetWorthHistoryUseCase.execute();
+    const { currentTotal, previousTotal, growthPercentage } = new PkiCalculator(heritage);
 
     return (
         <main className="min-h-screen bg-background">
@@ -26,11 +26,11 @@ export default async function PatrimonioPage(): Promise<ReactNode> {
 
                 {!error && (
                     <>
-                        <PatrimonioHeader/>
-                        <PatrimonioKPIs currentTotal={currentTotal} previousTotal={previousTotal}
+                        <HeritageHeader/>
+                        <HeritageKPIs currentTotal={currentTotal} previousTotal={previousTotal}
                                         growthPercentage={growthPercentage}/>
-                        <PatrimonioLineChart data={patrimonio}/>
-                        <PatrimonioTable data={patrimonio}/>
+                        <HeritageLineChart data={heritage}/>
+                        <HeritageTable data={heritage}/>
                     </>
                 )}
             </div>

@@ -11,8 +11,8 @@ import { updateNetWorth, NetWorthFormState } from '@/lib/infrastructure/actions/
 interface NetWorthFormProps {
   initialNetWorth: {
     month: string;
-    hucha: number;
-    invertido: number;
+    saving: number;
+    investment: number;
   };
 }
 
@@ -52,8 +52,8 @@ export function NetWorthForm({ initialNetWorth }: NetWorthFormProps): React.Reac
       <div>
         <FinanceInput label="Hucha (Efectivo)" placeholder="0,00" type="number" icon={<span className="text-sm font-medium">€</span>}
           name="hucha"
-          defaultValue={initialNetWorth.hucha}
-          aria-describedby="hucha-error"
+          defaultValue={initialNetWorth.saving}
+          aria-describedby="saving-error"
         />
         <div id="hucha-error" aria-live="polite" aria-atomic="true">
           {state.errors?.hucha &&
@@ -67,8 +67,8 @@ export function NetWorthForm({ initialNetWorth }: NetWorthFormProps): React.Reac
       <div>
         <FinanceInput label="Total Invertido" placeholder="0,00" type="number" icon={<span className="text-sm font-medium">€</span>} className="mt-4"
           name="invertido"
-          defaultValue={initialNetWorth.invertido}
-          aria-describedby="invertido-error"
+          defaultValue={initialNetWorth.investment}
+          aria-describedby="investment-error"
         />
         <div id="invertido-error" aria-live="polite" aria-atomic="true">
           {state.errors?.invertido &&

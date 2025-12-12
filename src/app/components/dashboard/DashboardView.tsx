@@ -1,36 +1,30 @@
-
-import type { Dashboard } from '@/lib/domain/models/Dashboard';
-import Link from "next/link";
-import { GetCurrentDashboard } from '@/lib/application/use-cases/GetCurrentDashboard';
-import { GoogleSheetsDashboardRepository } from '@/lib/infrastructure/repositories/GoogleSheetsDashboardRepository';
-import { SPREADSHEET_ID } from '@/lib/infrastructure/google/sheetsClient';
-import { handleGoogleSheetsError } from '@/lib/utils/errorHandler';
-import { MonthlySettingsForm } from './MonthlySettingsForm';
-import { NetWorthForm } from './NetWorthForm';
+import type {Dashboard} from '@/lib/domain/models/Dashboard';
+import {GetCurrentDashboard} from '@/lib/application/use-cases/GetCurrentDashboard';
+import {GoogleSheetsDashboardRepository} from '@/lib/infrastructure/repositories/GoogleSheetsDashboardRepository';
+import {SPREADSHEET_ID} from '@/lib/infrastructure/google/sheetsClient';
+import {handleGoogleSheetsError} from '@/lib/utils/errorHandler';
+import {MonthlySettingsForm} from './MonthlySettingsForm';
+import {NetWorthForm} from './NetWorthForm';
 
 // Import v0 components
-import { DashboardHeader } from "@/app/components/dashboard/dashboard-header";
-import { KPICard } from "@/app/components/dashboard/kpi-card";
-import { IncomeExpenseChart } from "@/app/components/dashboard/income-expense-chart";
-import { BalanceGoalsChart } from "@/app/components/dashboard/balance-goals-chart";
-import { NavigationCards } from "@/app/components/dashboard/navigation-cards";
-import { TransactionForm } from "@/app/components/dashboard/transaction-form";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
+import {DashboardHeader} from "@/app/components/dashboard/dashboard-header";
+import {KPICard} from "@/app/components/dashboard/kpi-card";
+import {IncomeExpenseChart} from "@/app/components/dashboard/income-expense-chart";
+import {BalanceGoalsChart} from "@/app/components/dashboard/balance-goals-chart";
+import {NavigationCards} from "@/app/components/dashboard/navigation-cards";
+import {TransactionForm} from "@/app/components/dashboard/transaction-form";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/app/components/ui/tabs";
 import {
     FinanceCard,
+    FinanceCardContent,
+    FinanceCardDescription,
     FinanceCardHeader,
     FinanceCardTitle,
-    FinanceCardDescription,
-    FinanceCardContent,
 } from "@/app/components/ui/finance-card";
-import { FinanceButton } from "@/app/components/ui/finance-button";
-import { FinanceInput } from "@/app/components/ui/finance-input";
-import { cn } from "@/lib/utils";
-import { Plus, ArrowUpCircle, ArrowDownCircle, Target, Loader2 } from "lucide-react";
-import { Skeleton } from "@/app/components/ui/skeleton";
-import { Empty } from "@/app/components/ui/empty";
+import {ArrowDownCircle, ArrowUpCircle, Target} from "lucide-react";
+import {Skeleton} from "@/app/components/ui/skeleton";
 
-// Función para obtener el mes en formato YYYY-MM
+// Función para obtener el month en formato YYYY-MM
 const getYearMonth = (date: Date) => date.toISOString().slice(0, 7);
 
 export default async function DashboardView({
@@ -55,7 +49,7 @@ export default async function DashboardView({
     selectedMonthString = getYearMonth(dateToFetch);
   }
   
-  // Asegurarnos de que usamos el primer día del mes para la búsqueda.
+  // Asegurarnos de que usamos el primer día del month para la búsqueda.
   dateToFetch.setDate(1);
 
   let dashboardData: Dashboard | null = null;
@@ -88,15 +82,15 @@ export default async function DashboardView({
   // Pre-fill forms with fetched data (for server components, this data will be rendered directly)
   const initialMonthlySettings = {
     month: dashboardData ? getYearMonth(dashboardData.mes) : getYearMonth(new Date()),
-    ingresos: dashboardData?.ingresos ?? 0,
-    ahorro: dashboardData?.ahorro ?? 0,
-    inversion: dashboardData?.inversion ?? 0,
+    income: dashboardData?.ingresos ?? 0,
+    saving: dashboardData?.ahorro ?? 0,
+    investment: dashboardData?.inversion ?? 0,
   };
 
   const initialNetWorth = {
     month: dashboardData ? getYearMonth(dashboardData.mes) : getYearMonth(new Date()),
-    hucha: 0,
-    invertido: 0,
+    saving: 0,
+    investment: 0,
   };
   
   // Derived state
@@ -142,7 +136,7 @@ export default async function DashboardView({
             {showMessage && (
                 <div className="py-10 border-2 border-dashed rounded-lg text-center text-muted-foreground">
                     <h3 className="text-lg font-semibold">
-                        {errorMessage || "No hay datos para este mes"}
+                        {errorMessage || "No hay datos para este month"}
                     </h3>
                     <p className="text-sm">Selecciona otro mes o utiliza los formularios de abajo para añadir información.</p>
                 </div>

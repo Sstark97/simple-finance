@@ -1,6 +1,6 @@
 /**
  * @file src/application/use-cases/UpdateMonthlySettings.ts
- * @description Caso de uso para actualizar la configuración mensual del dashboard (ingresos, ahorro, inversión).
+ * @description Caso de uso para actualizar la configuración mensual del dashboard (income, saving, inversión).
  */
 import { Dashboard } from '@/lib/domain/models/Dashboard';
 import { DashboardRepository } from '@/lib/application/repositories/DashboardRepository';

@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
       dateToFetch = new Date(today.getFullYear(), today.getMonth(), 1);
     }
     
-    // Asegurarnos de que usamos el primer día del mes para la búsqueda.
+    // Asegurarnos de que usamos el primer día del month para la búsqueda.
     dateToFetch.setDate(1);
 
 

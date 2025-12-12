@@ -3,17 +3,17 @@
 import type React from 'react';
 import { useEffect, useState, useRef } from 'react';
 import { FinanceCard, FinanceCardHeader, FinanceCardTitle, FinanceCardContent } from '@/app/components/ui/finance-card';
-import {PatrimonioDto} from "@/lib/application/dtos/dtos";
+import {HeritageRaw} from "@/lib/application/dtos/dtos";
 import {CurrencyFormatter} from "@/lib/domain/services/currency-formatter";
 
-interface PatrimonioLineChartProps {
-  data: PatrimonioDto[];
+interface HeritageLineChartProps {
+  data: HeritageRaw[];
 }
 
-export function PatrimonioLineChart({ data }: PatrimonioLineChartProps): React.ReactNode {
+export function HeritageLineChart({ data }: HeritageLineChartProps): React.ReactNode {
   const [isAnimating, setIsAnimating] = useState<boolean>(true);
   const [progress, setProgress] = useState<number>(0);
-  const [tooltip, setTooltip] = useState<{ x: number; y: number; data: PatrimonioDto } | null>(null);
+  const [tooltip, setTooltip] = useState<{ x: number; y: number; data: HeritageRaw } | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
   const padding = { top: 40, right: 30, bottom: 50, left: 70 };
@@ -23,10 +23,8 @@ export function PatrimonioLineChart({ data }: PatrimonioLineChartProps): React.R
   const chartHeight = height - padding.top - padding.bottom;
 
   // Validate and filter data - ensure all values are valid numbers
-  const validData = data.filter((d): d is PatrimonioDto =>
-    typeof d.total === 'number' && Number.isFinite(d.total) &&
-    typeof d.hucha === 'number' && Number.isFinite(d.hucha) &&
-    typeof d.invertido === 'number' && Number.isFinite(d.invertido)
+  const validData = data.filter((d): d is HeritageRaw =>
+    Number.isFinite(d.total) && Number.isFinite(d.saving) && Number.isFinite(d.investment)
   );
 
   // Handle empty data case
@@ -74,7 +72,7 @@ export function PatrimonioLineChart({ data }: PatrimonioLineChartProps): React.R
   }, []);
 
   // Calculate points
-  const points = validData.map((d, i): { x: number; y: number; data: PatrimonioDto } => {
+  const points = validData.map((d, i): { x: number; y: number; data: HeritageRaw } => {
     // Handle edge case: single data point should be centered horizontally
     const xPosition = validData.length === 1
       ? padding.left + chartWidth / 2
@@ -208,7 +206,7 @@ export function PatrimonioLineChart({ data }: PatrimonioLineChartProps): React.R
             {/* X-axis labels */}
             {points.map((point, i) => (
               <text key={i} x={point.x} y={height - 15} textAnchor="middle" className="fill-muted-foreground text-xs">
-                {point.data.mes}
+                {point.data.month}
               </text>
             ))}
 
@@ -273,7 +271,7 @@ export function PatrimonioLineChart({ data }: PatrimonioLineChartProps): React.R
                 top: `${tooltip.y - 120}px`,
               }}
             >
-              <p className="font-semibold text-foreground mb-2">{tooltip.data.mes}</p>
+              <p className="font-semibold text-foreground mb-2">{tooltip.data.month}</p>
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between gap-4">
                   <span className="text-muted-foreground">Total:</span>
@@ -281,11 +279,11 @@ export function PatrimonioLineChart({ data }: PatrimonioLineChartProps): React.R
                 </div>
                 <div className="flex justify-between gap-4">
                   <span className="text-muted-foreground">Hucha:</span>
-                  <span className="font-medium text-[#10B981]">{CurrencyFormatter.toEur(tooltip.data.hucha)}</span>
+                  <span className="font-medium text-[#10B981]">{CurrencyFormatter.toEur(tooltip.data.saving)}</span>
                 </div>
                 <div className="flex justify-between gap-4">
                   <span className="text-muted-foreground">Invertido:</span>
-                  <span className="font-medium text-[#3B82F6]">{CurrencyFormatter.toEur(tooltip.data.invertido)}</span>
+                  <span className="font-medium text-[#3B82F6]">{CurrencyFormatter.toEur(tooltip.data.investment)}</span>
                 </div>
               </div>
             </div>

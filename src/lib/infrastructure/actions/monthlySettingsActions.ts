@@ -35,9 +35,9 @@ export async function updateMonthlySettings(
   // 1. Validar los datos del formulario con Zod
   const validatedFields = UpdateMonthlySettingsSchema.safeParse({
     month: formData.get('month'),
-    ingresos: formData.get('ingresos'),
-    ahorro: formData.get('ahorro'),
-    inversion: formData.get('inversion'),
+    ingresos: formData.get('income'),
+    ahorro: formData.get('saving'),
+    inversion: formData.get('investment'),
   });
 
   // 2. Si la validación falla, devolver los errores inmediatamente.

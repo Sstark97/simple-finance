@@ -1,14 +1,14 @@
-import type {PatrimonioDto} from "@/lib/application/dtos/dtos";
+import type {HeritageRaw} from "@/lib/application/dtos/dtos";
 
 export class PkiCalculator {
-    constructor(private readonly patrimonio: PatrimonioDto[]) {}
+    constructor(private readonly heritage: HeritageRaw[]) {}
 
     get currentTotal(): number {
-        return this.patrimonio.at(-1)?.total ?? 0;
+        return this.heritage.at(-1)?.total ?? 0;
     }
 
     get previousTotal(): number {
-        return this.patrimonio.at(-2)?.total ?? 0;
+        return this.heritage.at(-2)?.total ?? 0;
     }
 
     get growthPercentage(): number {

@@ -48,7 +48,7 @@
       "name": "Net Worth",
       "short_name": "Net Worth",
       "description": "View net worth",
-      "url": "/patrimonio",
+      "url": "/heritage",
       "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     }
   ]

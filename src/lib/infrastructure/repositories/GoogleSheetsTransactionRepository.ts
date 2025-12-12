@@ -6,22 +6,21 @@ import { TransactionRepository } from '@/lib/application/repositories/Transactio
 import sheets, { SPREADSHEET_ID } from '@/lib/infrastructure/google/sheetsClient';
 import { parseDayMonthYearString } from '@/lib/utils/dateParser';
 import { SHEET_CONFIG } from '@/lib/config/sheets';
-import type {TransactionRawData} from "@/lib/application/dtos/dtos";
+import type {TransactionRaw} from "@/lib/application/dtos/dtos";
 
 export class GoogleSheetsTransactionRepository implements TransactionRepository {
   /**
-   * Mapea una fila de Google Sheet a un objeto TransactionRawData.
+   * Mapea una fila de Google Sheet a un objeto TransactionRaw.
    * @param row Array de valores de una fila.
-   * @returns Objeto TransactionRawData.
+   * @returns Objeto TransactionRaw.
    */
-  private mapRowToTransaction(row: string[]): TransactionRawData {
+  private mapRowToTransaction(row: string[]): TransactionRaw {
     const amountStr = row[2] ?? '0';
     return {
-      id: 0,
-      fechaCobro: parseDayMonthYearString(row[0]), // Usa la nueva función de parseo
-      concepto: row[1] ?? '',
-      importe: parseFloat(amountStr.replace(',', '.')),
-      categoria: row[3] ?? '',
+      collectionDate: parseDayMonthYearString(row[0]), // Usa la nueva función de parseo
+      concept: row[1] ?? '',
+      amount: parseFloat(amountStr.replace(',', '.')),
+      category: row[3] ?? '',
     };
   }
   
@@ -30,13 +29,13 @@ export class GoogleSheetsTransactionRepository implements TransactionRepository 
    * @param transaction La transacción a añadir.
    * @returns La transacción añadida.
    */
-  async addTransaction(transaction: Omit<TransactionRawData, 'fechaCobro'> & { fechaCobro: string }): Promise<TransactionRawData> {
+  async addTransaction(transaction: Omit<TransactionRaw, 'collectionDate'> & { fechaCobro: string }): Promise<TransactionRaw> {
     const config = SHEET_CONFIG.transactions;
     const row = [
       transaction.fechaCobro,
-      transaction.concepto,
-      transaction.importe.toString(),
-      transaction.categoria,
+      transaction.concept,
+      transaction.amount.toString(),
+      transaction.category,
     ];
 
     const response = await sheets.spreadsheets.values.append({
@@ -53,7 +52,7 @@ export class GoogleSheetsTransactionRepository implements TransactionRepository 
       throw new Error('Error al añadir la transacción a Google Sheets.');
     }
 
-    return { ...transaction, fechaCobro: new Date(transaction.fechaCobro) };
+    return { ...transaction, collectionDate: new Date(transaction.fechaCobro) };
   }
 
   /**
@@ -77,7 +76,7 @@ export class GoogleSheetsTransactionRepository implements TransactionRepository 
    * Obtiene todas las transacciones.
    * @returns Un array con todas las transacciones.
    */
-  async findAll(): Promise<TransactionRawData[]> {
+  async findAll(): Promise<TransactionRaw[]> {
     const config = SHEET_CONFIG.transactions;
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
@@ -101,6 +100,6 @@ export class GoogleSheetsTransactionRepository implements TransactionRepository 
           return null;
         }
       })
-      .filter((transaction): transaction is TransactionRawData => transaction !== null && !isNaN(transaction.fechaCobro.getTime()));
+      .filter((transaction): transaction is TransactionRaw => transaction !== null && !isNaN(transaction.collectionDate.getTime()));
   }
 }

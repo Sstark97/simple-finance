@@ -6,17 +6,17 @@ import { NetWorth } from '@/lib/domain/models/NetWorth';
 
 export interface NetWorthRepository {
   /**
-   * Obtiene el patrimonio neto para un mes específico.
-   * @param month La fecha del mes.
-   * @returns Los datos de patrimonio neto para el mes, o null si no se encuentran.
+   * Obtiene el patrimonio neto para un month específico.
+   * @param month La fecha del month.
+   * @returns Los datos de patrimonio neto para el month, o null si no se encuentran.
    */
   findByMonth(month: Date): Promise<NetWorth | null>;
 
   /**
-   * Actualiza el patrimonio neto para un mes específico. Si el mes no existe, lo crea.
-   * @param month La fecha del mes a actualizar/crear.
-   * @param hucha Nuevo valor de "hucha".
-   * @param invertido Nuevo valor de "invertido".
+   * Actualiza el patrimonio neto para un month específico. Si el month no existe, lo crea.
+   * @param month La fecha del month a actualizar/crear.
+   * @param hucha Nuevo valor de "saving".
+   * @param invertido Nuevo valor de "investment".
    * @returns El patrimonio neto actualizado o creado.
    */
   saveNetWorth(

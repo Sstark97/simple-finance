@@ -9,8 +9,8 @@ import { z } from 'zod';
 export const AddTransactionSchema = z.object({
   description: z.string().min(3, { message: 'La descripción debe tener al menos 3 caracteres.' }),
   amount: z.coerce
-    .number({ invalid_type_error: 'El importe debe ser un número.' })
-    .positive({ message: 'El importe debe ser mayor que cero.' }),
+    .number({ invalid_type_error: 'El amount debe ser un número.' })
+    .positive({ message: 'El amount debe ser mayor que cero.' }),
   // La fecha viene del formulario como un string 'YYYY-MM-DD'.
   date: z.string().min(1, { message: 'Por favor, selecciona una fecha.' }),
   // El tipo no lo incluimos porque nuestro formulario de ejemplo es solo para gastos.

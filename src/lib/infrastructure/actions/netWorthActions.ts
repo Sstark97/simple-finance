@@ -2,7 +2,7 @@
 
 /**
  * @file src/lib/infrastructure/actions/netWorthActions.ts
- * @description Server Action para actualizar el patrimonio neto.
+ * @description Server Action para actualizar el heritage neto.
  */
 
 import { revalidatePath } from 'next/cache';
@@ -34,8 +34,8 @@ export async function updateNetWorth(
   // 1. Validar los datos del formulario con Zod
   const validatedFields = UpdateNetWorthSchema.safeParse({
     month: formData.get('month'),
-    hucha: formData.get('hucha'),
-    invertido: formData.get('invertido'),
+    hucha: formData.get('saving'),
+    invertido: formData.get('investment'),
   });
 
   // 2. Si la validación falla, devolver los errores inmediatamente.

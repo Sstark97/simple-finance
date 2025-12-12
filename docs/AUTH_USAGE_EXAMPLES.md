@@ -170,7 +170,7 @@ export default function RootLayout({
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/infrastructure/auth/better-auth.config";
 
-const protectedRoutes = ["/dashboard", "/transactions", "/patrimonio"];
+const protectedRoutes = ["/dashboard", "/transactions", "/heritage"];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
   const path = request.nextUrl.pathname;

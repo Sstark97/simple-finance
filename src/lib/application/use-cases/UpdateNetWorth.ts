@@ -1,6 +1,6 @@
 /**
  * @file src/application/use-cases/UpdateNetWorth.ts
- * @description Caso de uso para actualizar el patrimonio neto para un mes específico.
+ * @description Caso de uso para actualizar el patrimonio neto para un month específico.
  */
 import { NetWorth } from '@/lib/domain/models/NetWorth';
 import { NetWorthRepository } from '@/lib/application/repositories/NetWorthRepository';

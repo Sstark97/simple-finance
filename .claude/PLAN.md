@@ -94,7 +94,7 @@ export default async function ExpensesPage() {
 Mismo patrón que gastos.
 
 #### 2.3 Refactorizar DashboardHeader
-Usar `<form>` con Server Action para cambio de mes en lugar de `router.push`.
+Usar `<form>` con Server Action para cambio de month en lugar de `router.push`.
 
 **Archivos a modificar:**
 - `src/app/gastos/page.tsx`
@@ -376,7 +376,7 @@ Crear `src/app/login/page.tsx` con botón de Google Sign-In.
   - Archivo: `src/lib/utils/dateParser.ts`
 
 ### ✅ Fase 4.5: COMPLETADA
-- ✓ Arreglado parseo de fechas (soporta formato español "D de mes de YYYY")
+- ✓ Arreglado parseo de fechas (soporta formato español "D de month de YYYY")
 - ✓ Arreglado parseo de datos de NetWorth (rango A:D y cálculo automático de total)
 - ✓ Creados componentes de gastos (ExpenseHeader, ExpenseSummary, ExpenseFilters, ExpenseDataGrid, ExpensesFilteredView)
 - ✓ Página gastos adaptada con diseño V0 y datos reales
@@ -443,7 +443,7 @@ Crear `src/app/login/page.tsx` con botón de Google Sign-In.
 - `src/app/api/dashboard/settings/route.ts`
 - `src/app/api/transactions/route.ts`
 - `src/app/gastos/page.tsx`
-- `src/app/patrimonio/page.tsx`
+- `src/app/heritage/page.tsx`
 - `src/app/components/dashboard/dashboard-header.tsx`
 - `src/lib/infrastructure/repositories/*.ts` (3 archivos)
 - `src/lib/infrastructure/actions/*.ts` (3 archivos)

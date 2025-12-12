@@ -1,13 +1,13 @@
 import { FinanceCard, FinanceCardHeader, FinanceCardTitle, FinanceCardContent } from '@/app/components/ui/finance-card';
-import type {PatrimonioDto} from "@/lib/application/dtos/dtos";
+import type {HeritageRaw} from "@/lib/application/dtos/dtos";
 import type {ReactNode} from "react";
 import {CurrencyFormatter} from "@/lib/domain/services/currency-formatter";
 
-interface PatrimonioTableProps {
-  data: PatrimonioDto[];
+interface HeritageTableProps {
+  data: HeritageRaw[];
 }
 
-export function PatrimonioTable({ data }: PatrimonioTableProps): ReactNode {
+export function HeritageTable({ data }: HeritageTableProps): ReactNode {
   const getChange = (index: number): number | null => {
     if (index === 0) return null;
     const current = data[index].total;
@@ -37,16 +37,16 @@ export function PatrimonioTable({ data }: PatrimonioTableProps): ReactNode {
                 const change = getChange(index);
                 return (
                   <tr
-                    key={row.mes}
+                    key={row.month}
                     className="border-b border-border/50 last:border-0 hover:bg-accent/50 transition-colors animate-row-in"
                     style={{ animationDelay: `${(index + 1) * 80}ms` }}
                   >
-                    <td className="py-3 px-4 text-sm font-medium text-foreground">{row.mes}</td>
+                    <td className="py-3 px-4 text-sm font-medium text-foreground">{row.month}</td>
                     <td className="py-3 px-4 text-right text-sm tabular-nums text-[#10B981]">
-                      {CurrencyFormatter.toEur(row.hucha)}
+                      {CurrencyFormatter.toEur(row.saving)}
                     </td>
                     <td className="py-3 px-4 text-right text-sm tabular-nums text-[#3B82F6]">
-                      {CurrencyFormatter.toEur(row.invertido)}
+                      {CurrencyFormatter.toEur(row.investment)}
                     </td>
                     <td className="py-3 px-4 text-right text-sm font-semibold tabular-nums text-[#8B5CF6]">
                       {CurrencyFormatter.toEur(row.total)}

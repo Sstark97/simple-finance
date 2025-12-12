@@ -36,8 +36,8 @@ export class GoogleSheetsDashboardRepository implements DashboardRepository {
   }
 
   /**
-   * Busca los datos del dashboard para un mes específico.
-   * @param month La fecha del mes a buscar.
+   * Busca los datos del dashboard para un month específico.
+   * @param month La fecha del month a buscar.
    * @returns Los datos del dashboard, o null si no se encuentran.
    */
   async findByMonth(month: Date): Promise<Dashboard | null> {
@@ -54,7 +54,7 @@ export class GoogleSheetsDashboardRepository implements DashboardRepository {
 
     const targetMonthString = formatMonthForSheet(month); // Formato "diciembre de 2025"
 
-    // Buscar la fila que coincida con la cadena del mes (ignorando la primera fila que son cabeceras)
+    // Buscar la fila que coincida con la cadena del month (ignorando la primera fila que son cabeceras)
     const dataRow = rows.slice(1).find(row => {
       if (!row[0]) {
           return false;
@@ -71,10 +71,10 @@ export class GoogleSheetsDashboardRepository implements DashboardRepository {
   }
 
   /**
-   * Actualiza los ingresos, ahorro e inversión para un mes específico.
-   * @param month La fecha del mes a actualizar.
-   * @param ingresos Nuevos ingresos.
-   * @param ahorro Nuevo objetivo de ahorro.
+   * Actualiza los income, saving e inversión para un month específico.
+   * @param month La fecha del month a actualizar.
+   * @param ingresos Nuevos income.
+   * @param ahorro Nuevo objetivo de saving.
    * @param inversion Nuevo objetivo de inversión.
    * @returns El dashboard actualizado.
    */
@@ -97,7 +97,7 @@ export class GoogleSheetsDashboardRepository implements DashboardRepository {
 
     const targetMonthString = formatMonthForSheet(month); // Formato "Diciembre de 2025"
 
-    // Encontrar la fila del mes. Ignoramos la cabecera.
+    // Encontrar la fila del month. Ignoramos la cabecera.
     const rowIndex = rows.slice(1).findIndex(row => {
         if (!row[0]) return false;
         const rowMonthString = row[0];

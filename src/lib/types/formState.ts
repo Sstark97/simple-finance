@@ -17,7 +17,7 @@ export type FormState<T = Record<string, string[]>> = {
 }
 
 /**
- * TransactionRawData-specific form state with field errors
+ * TransactionRaw-specific form state with field errors
  */
 export type TransactionFormState = FormState<{
   fechaCobro?: string[]

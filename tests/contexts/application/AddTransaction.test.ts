@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { AddTransaction } from '@/lib/application/use-cases/AddTransaction';
 import type { TransactionRepository } from '@/lib/application/repositories/TransactionRepository';
-import type { TransactionRawData } from '@/lib/domain/models/TransactionRawData';
+import type { TransactionRawData } from '@/lib/domain/models/TransactionRaw';
 
 describe('AddTransaction', () => {
   it('should add a transaction successfully', async () => {
@@ -56,7 +56,7 @@ describe('AddTransaction', () => {
     const result = await useCase.execute(inputTransaction);
 
     expect(result).toEqual(expectedTransaction);
-    expect(result.categoria).toBe('Entretenimiento');
+    expect(result.category).toBe('Entretenimiento');
   });
 
   it('should propagate repository errors', async () => {

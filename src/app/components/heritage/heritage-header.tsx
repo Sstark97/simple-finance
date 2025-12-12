@@ -1,8 +1,9 @@
+import type {ReactNode} from "react";
 import Link from 'next/link';
 import { ArrowLeft, TrendingUp } from 'lucide-react';
 import { FinanceButton } from '@/app/components/ui/finance-button';
 
-export function PatrimonioHeader(): React.ReactNode {
+export function HeritageHeader(): ReactNode {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-3">

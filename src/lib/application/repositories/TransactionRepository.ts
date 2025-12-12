@@ -2,7 +2,7 @@
  * @file src/application/repositories/TransactionRepository.ts
  * @description Define la interfaz para el repositorio de Transacciones.
  */
-import {TransactionRawData} from "@/lib/application/dtos/dtos";
+import {TransactionRaw} from "@/lib/application/dtos/dtos";
 
 export interface TransactionRepository {
   /**
@@ -10,11 +10,11 @@ export interface TransactionRepository {
    * @param transaction La transacción a añadir.
    * @returns La transacción añadida.
    */
-  addTransaction(transaction: Omit<TransactionRawData, 'fechaCobro'> & { fechaCobro: string }): Promise<TransactionRawData>;
+  addTransaction(transaction: Omit<TransactionRaw, 'collectionDate'> & { fechaCobro: string }): Promise<TransactionRaw>;
 
   /**
    * Obtiene todas las transacciones.
    * @returns Un array con todas las transacciones.
    */
-  findAll(): Promise<TransactionRawData[]>;
+  findAll(): Promise<TransactionRaw[]>;
 }

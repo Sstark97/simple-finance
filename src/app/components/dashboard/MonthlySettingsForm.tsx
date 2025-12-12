@@ -11,9 +11,9 @@ import { updateMonthlySettings, MonthlySettingsFormState } from '@/lib/infrastru
 interface MonthlySettingsFormProps {
   initialMonthlySettings: {
     month: string;
-    ingresos: number;
-    ahorro: number;
-    inversion: number;
+    income: number;
+    saving: number;
+    investment: number;
   };
 }
 
@@ -56,8 +56,8 @@ export function MonthlySettingsForm({ initialMonthlySettings }: MonthlySettingsF
           type="number" 
           icon={<span className="text-sm font-medium">€</span>}
           name="ingresos"
-          defaultValue={initialMonthlySettings.ingresos}
-          aria-describedby="ingresos-error"
+          defaultValue={initialMonthlySettings.income}
+          aria-describedby="income-error"
         />
         <div id="ingresos-error" aria-live="polite" aria-atomic="true">
           {state.errors?.ingresos &&
@@ -71,8 +71,8 @@ export function MonthlySettingsForm({ initialMonthlySettings }: MonthlySettingsF
       <div>
         <FinanceInput label="Objetivo Ahorro" type="number" icon={<span className="text-sm font-medium">€</span>} className="mt-4"
           name="ahorro"
-          defaultValue={initialMonthlySettings.ahorro}
-          aria-describedby="ahorro-error"
+          defaultValue={initialMonthlySettings.saving}
+          aria-describedby="saving-error"
         />
         <div id="ahorro-error" aria-live="polite" aria-atomic="true">
           {state.errors?.ahorro &&
@@ -86,8 +86,8 @@ export function MonthlySettingsForm({ initialMonthlySettings }: MonthlySettingsF
       <div>
         <FinanceInput label="Objetivo Inversión" type="number" icon={<span className="text-sm font-medium">€</span>} className="mt-4"
           name="inversion"
-          defaultValue={initialMonthlySettings.inversion}
-          aria-describedby="inversion-error"
+          defaultValue={initialMonthlySettings.investment}
+          aria-describedby="investment-error"
         />
         <div id="inversion-error" aria-live="polite" aria-atomic="true">
           {state.errors?.inversion &&

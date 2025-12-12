@@ -6,7 +6,7 @@ import { FinanceCard, FinanceCardContent } from '@/app/components/ui/finance-car
 import { cn } from '@/lib/utils';
 import {CurrencyFormatter} from "@/lib/domain/services/currency-formatter";
 
-interface PatrimonioKPIsProps {
+interface HeritageKPIsProps {
   currentTotal: number;
   previousTotal: number;
   growthPercentage: number;
@@ -40,11 +40,11 @@ function useCountUp(end: number, duration = 1000, decimals = 0): number {
   return count;
 }
 
-export function PatrimonioKPIs({
+export function HeritageKPIs({
   currentTotal,
   previousTotal,
   growthPercentage,
-}: PatrimonioKPIsProps): ReactNode {
+}: HeritageKPIsProps): ReactNode {
   const animatedTotal = useCountUp(currentTotal, 1400);
   const animatedGrowth = useCountUp(Math.abs(growthPercentage), 1200, 1);
   const isPositiveGrowth = growthPercentage >= 0;

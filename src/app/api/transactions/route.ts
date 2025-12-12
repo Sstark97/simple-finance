@@ -3,7 +3,7 @@ import { AddTransaction } from '@/lib/application/use-cases/AddTransaction';
 import { GetTransactions } from '@/lib/application/use-cases/GetTransactions';
 import { GoogleSheetsTransactionRepository } from '@/lib/infrastructure/repositories/GoogleSheetsTransactionRepository';
 import { requireAuth } from '@/lib/utils/authGuard';
-import {TransactionRawData} from "@/lib/application/dtos/dtos";
+import {TransactionRaw} from "@/lib/application/dtos/dtos";
 
 export async function GET() {
   const authError = await requireAuth();
@@ -47,12 +47,11 @@ export async function POST(request: Request) {
     const transactionRepository = new GoogleSheetsTransactionRepository();
     const addTransactionUseCase = new AddTransaction(transactionRepository);
 
-    const newTransaction: Omit<TransactionRawData, 'fechaCobro'> & { fechaCobro: string } = {
-        id:0,
+    const newTransaction: Omit<TransactionRaw, 'collectionDate'> & { fechaCobro: string } = {
         fechaCobro, // Ya viene como string YYYY-MM-DD
-        concepto,
-        importe,
-        categoria,
+        concept: concepto,
+        amount: importe,
+        category: categoria,
     };
 
     const addedTransaction = await addTransactionUseCase.execute(newTransaction);

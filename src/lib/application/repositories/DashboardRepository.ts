@@ -6,17 +6,17 @@ import { Dashboard } from '@/lib/domain/models/Dashboard';
 
 export interface DashboardRepository {
   /**
-   * Obtiene los datos del dashboard para un mes específico.
-   * @param month La fecha del mes (por ejemplo, 2025-12-01).
-   * @returns Los datos del dashboard para el mes, o null si no se encuentran.
+   * Obtiene los datos del dashboard para un month específico.
+   * @param month La fecha del month (por ejemplo, 2025-12-01).
+   * @returns Los datos del dashboard para el month, o null si no se encuentran.
    */
   findByMonth(month: Date): Promise<Dashboard | null>;
 
   /**
-   * Actualiza los ingresos, ahorro e inversión para un mes específico en el dashboard.
-   * @param month La fecha del mes a actualizar.
-   * @param ingresos Nuevos ingresos.
-   * @param ahorro Nuevo objetivo de ahorro.
+   * Actualiza los income, saving e inversión para un month específico en el dashboard.
+   * @param month La fecha del month a actualizar.
+   * @param ingresos Nuevos income.
+   * @param ahorro Nuevo objetivo de saving.
    * @param inversion Nuevo objetivo de inversión.
    * @returns El dashboard actualizado.
    */

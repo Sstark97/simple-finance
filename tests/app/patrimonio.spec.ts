@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Patrimonio Page', () => {
-  test('should load patrimonio page successfully', async ({ page }) => {
+  test('should load heritage page successfully', async ({ page }) => {
     await page.goto('/patrimonio');
 
     // Verify page loaded
@@ -20,7 +20,7 @@ test.describe('Patrimonio Page', () => {
 
     // Verify KPI cards are visible
     await expect(page.getByText(/patrimonio actual/i)).toBeVisible();
-    await expect(page.getByText(/crecimiento último mes/i)).toBeVisible();
+    await expect(page.getByText(/crecimiento último month/i)).toBeVisible();
   });
 
   test('should display line chart', async ({ page }) => {
@@ -45,9 +45,9 @@ test.describe('Patrimonio Page', () => {
 
     if (hasTable) {
       // Verify table headers
-      await expect(page.getByRole('columnheader', { name: /mes/i })).toBeVisible();
-      await expect(page.getByRole('columnheader', { name: /hucha/i })).toBeVisible();
-      await expect(page.getByRole('columnheader', { name: /invertido/i })).toBeVisible();
+      await expect(page.getByRole('columnheader', { name: /month/i })).toBeVisible();
+      await expect(page.getByRole('columnheader', { name: /saving/i })).toBeVisible();
+      await expect(page.getByRole('columnheader', { name: /investment/i })).toBeVisible();
       await expect(page.getByRole('columnheader', { name: /total/i })).toBeVisible();
       await expect(page.getByRole('columnheader', { name: /variación/i })).toBeVisible();
     }

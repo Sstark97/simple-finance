@@ -1,21 +1,20 @@
-export interface PatrimonioDto {
-    mes: string;
+export interface HeritageRaw {
+    month: string;
     total: number;
-    hucha: number;
-    invertido: number;
+    saving: number;
+    investment: number;
 }
 
-export type PatrimonioResult = {
-    patrimonio: PatrimonioDto[];
+export type HeritageResult = {
+    heritage: HeritageRaw[];
     error?: string;
 }
 
-export interface TransactionRawData {
-    id: number;
-    fechaCobro: Date;
-    concepto: string;
-    importe: number;
-    categoria: string;
+export interface TransactionRaw {
+    collectionDate: Date;
+    concept: string;
+    amount: number;
+    category: string;
 }
 
 export interface Expense {

@@ -45,7 +45,7 @@ La estructura de carpetas del proyecto, alineada con Next.js y la Arquitectura H
 │                                                                                        
 ├── domain/                                                                              
 │   ├── models/                                                                          
-│   │   ├── TransactionRawData.ts                                                               
+│   │   ├── TransactionRaw.ts                                                               
 │   │   ├── Dashboard.ts                                                                 
 │   │   └── NetWorth.ts                                                                  
 │   └── services/                                                                        
@@ -87,7 +87,7 @@ indCSS/shadcn/ui, estilos globales, `ThemeProvider`).
 2.  **Arquitectura Hexagonal Implementada:**                                             
     *   Creación de la estructura de carpetas `domain/`, `application/`, `infrastructure/
 `.                                                                                       
-    *   Implementación de modelos de dominio (`TransactionRawData`, `Dashboard`, `NetWorth`).   
+    *   Implementación de modelos de dominio (`TransactionRaw`, `Dashboard`, `NetWorth`).   
     *   Definición de interfaces de repositorios.                                        
     *   Implementación de casos de uso para las operaciones CRUD principales.            
                                                                                          
@@ -108,9 +108,9 @@ ard`, `POST /api/transactions`, `PUT /api/dashboard/settings`, `PUT /api/networt
     *   Integración de un diseño de UI moderno y elegante generado por v0.dev.           
     *   Implementación del Dashboard principal con componentes visuales avanzados (tarjet
 as, gráficos de donut y barras).                                                         
-    *   Funcionalidad de selección de mes para visualizar datos históricos.              
+    *   Funcionalidad de selección de month para visualizar datos históricos.              
     *   Manejo de estados de carga (skeletons) y visualización de un mensaje amigable cua
-ndo no hay datos para el mes seleccionado.                                               
+ndo no hay datos para el month seleccionado.                                               
     *   Mejoras visuales en los gráficos del dashboard para mayor claridad (ej. Balance e
 n el centro del donut, color más vivo para "Disponible para Objetivos").                 
     *   Creación de páginas dedicadas para el "Historial de Gastos" y "Historial de Patri
@@ -129,17 +129,17 @@ monio", incluyendo navegación.
 1.  **Refactorización a Server Components (DashboardView):**                             
     *   `DashboardView` convertido a Server Component.                                   
     *   Toda la lógica de obtención de datos (`dashboardData`) se ha movido al servidor, 
-utilizando `searchParams` para el mes seleccionado.                                      
+utilizando `searchParams` para el month seleccionado.                                      
     *   Los formularios (`TransactionForm`, `MonthlySettingsForm`, `NetWorthForm`) se han
  extraído como Client Components independientes.                                         
     *   Implementación de Server Actions para `addTransaction`, `updateMonthlySettings` y
  `saveNetWorth`, manejando la validación con Zod y la revalidación de caché con `reval
 idatePath`.                                                                             
     *   `DashboardHeader` refactorizado para ser un Client Component y usar `useRouter` p
-ara actualizar los `searchParams` de la URL al cambiar el mes.                           
+ara actualizar los `searchParams` de la URL al cambiar el month.                           
                                                                                          
 2.  **Problemas Identificados:**                                                         
-    *   **Cambio de Mes No Funcionando Correctamente:** La funcionalidad de cambiar el mes
+    *   **Cambio de Mes No Funcionando Correctamente:** La funcionalidad de cambiar el month
  en el `DashboardHeader` y que esto actualice los datos del `DashboardView` no está funcio
 nando como se esperaba. Se requiere depuración en el Client Component `DashboardHeader` y
  en la propagación de `searchParams` al Server Component `DashboardView`.                 

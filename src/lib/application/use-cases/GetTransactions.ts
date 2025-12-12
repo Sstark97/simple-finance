@@ -8,7 +8,7 @@ export class GetTransactions {
   async execute(): Promise<ExpensesResult> {
     try {
       const transactionRawData = await this.transactionRepository.findAll();
-      const transactions = transactionRawData.map((transactionRawData, index) => new Transaction({...transactionRawData, id: index}));
+      const transactions = transactionRawData.map((transactionRawData) => Transaction.fromRawData(transactionRawData));
       const expenses: Expense[] = transactions.map((transaction) => transaction.transformTransactionToExpense());
       return {expenses};
     } catch (err) {

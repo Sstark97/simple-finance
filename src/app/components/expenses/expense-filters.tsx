@@ -19,7 +19,7 @@ export function ExpenseFilters({
         <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
                 <FinanceInput
-                    placeholder="Buscar por concepto..."
+                    placeholder="Buscar por concept..."
                     value={searchTerm}
                     onChange={(e) => onSearchChange(e.target.value)}
                     icon={<Search className="h-4 w-4"/>}
