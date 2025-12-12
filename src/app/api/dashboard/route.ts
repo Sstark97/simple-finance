@@ -2,8 +2,15 @@ import { NextResponse, NextRequest } from 'next/server';
 import { GetCurrentDashboard } from '@/lib/application/use-cases/GetCurrentDashboard';
 import { GoogleSheetsDashboardRepository } from '@/lib/infrastructure/repositories/GoogleSheetsDashboardRepository';
 import { SPREADSHEET_ID } from '@/lib/infrastructure/google/sheetsClient';
+import { handleGoogleSheetsError } from '@/lib/utils/errorHandler';
+import { requireAuth } from '@/lib/utils/authGuard';
 
 export async function GET(request: NextRequest) {
+  const authError = await requireAuth();
+  if (authError) {
+    return authError;
+  }
+
   if (!SPREADSHEET_ID) {
     const errorMessage = 'SPREADSHEET_ID no está configurado en las variables de entorno.';
     console.error(errorMessage);
@@ -38,29 +45,19 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    return NextResponse.json(dashboardData, { status: 200 });
-  } catch (error: any) {
+    return NextResponse.json(dashboardData, {
+      status: 200,
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+      }
+    });
+  } catch (error: unknown) {
     console.error('Error detallado al obtener datos del dashboard:', error);
 
-    let errorMessage = 'Ocurrió un error en el servidor.';
-    let statusCode = 500;
-
-    if (error.code === 403) {
-      errorMessage =
-        'Error de permisos (403): La API de Google Sheets no está activada en tu proyecto de GCP o la cuenta de servicio no tiene permisos de "Editor" en la hoja de cálculo.';
-      statusCode = 403;
-    } else if (error.code === 404) {
-      errorMessage = `No se pudo encontrar la hoja de cálculo con el ID proporcionado (404). Verifica que el SPREADSHEET_ID sea correcto.`;
-      statusCode = 404;
-    } else if (error.message?.includes('file not found')) {
-      errorMessage = 'No se encontró el fichero `credentials.json`. Asegúrate de que está en la raíz del proyecto.';
-    } else if (error.message?.includes('invalid_grant')) {
-        errorMessage = 'Error de autenticación (invalid_grant). Revisa que el fichero `credentials.json` sea correcto y que la hora del sistema del servidor sea correcta.'
-    }
-
+    const { code, message } = handleGoogleSheetsError(error);
     return NextResponse.json(
-      { message: 'Error al obtener los datos del dashboard.', error: errorMessage },
-      { status: statusCode }
+      { message: 'Error al obtener los datos del dashboard.', error: message },
+      { status: code }
     );
   }
 }

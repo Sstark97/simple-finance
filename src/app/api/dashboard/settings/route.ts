@@ -10,7 +10,6 @@ export async function PUT(request: Request) {
   try {
     const { month, ingresos, ahorro, inversion } = await request.json();
 
-    // Validar los datos de entrada
     if (!month || typeof ingresos !== 'number' || typeof ahorro !== 'number' || typeof inversion !== 'number') {
       return NextResponse.json({ message: 'Missing or invalid monthly settings data' }, { status: 400 });
     }
@@ -18,7 +17,6 @@ export async function PUT(request: Request) {
     const dashboardRepository = new GoogleSheetsDashboardRepository();
     const updateMonthlySettingsUseCase = new UpdateMonthlySettings(dashboardRepository);
 
-    // month debe ser una cadena de fecha que se pueda convertir a Date
     const monthDate = new Date(month);
 
     const updatedDashboard = await updateMonthlySettingsUseCase.execute(
@@ -31,7 +29,6 @@ export async function PUT(request: Request) {
     return NextResponse.json(updatedDashboard, { status: 200 });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
-    console.error('Error updating monthly settings:', error);
     return NextResponse.json({ message: 'Error updating monthly settings', error: message }, { status: 500 });
   }
 }

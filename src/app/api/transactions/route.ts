@@ -3,15 +3,26 @@ import { AddTransaction } from '@/lib/application/use-cases/AddTransaction';
 import { GetTransactions } from '@/lib/application/use-cases/GetTransactions';
 import { GoogleSheetsTransactionRepository } from '@/lib/infrastructure/repositories/GoogleSheetsTransactionRepository';
 import { Transaction } from '@/lib/domain/models/Transaction';
+import { requireAuth } from '@/lib/utils/authGuard';
 
 export async function GET() {
+  const authError = await requireAuth();
+  if (authError) {
+    return authError;
+  }
+
   try {
     const transactionRepository = new GoogleSheetsTransactionRepository();
     const getTransactionsUseCase = new GetTransactions(transactionRepository);
 
     const transactions = await getTransactionsUseCase.execute();
 
-    return NextResponse.json(transactions, { status: 200 });
+    return NextResponse.json(transactions, {
+      status: 200,
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+      }
+    });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error fetching transactions:', error);
@@ -20,6 +31,11 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const authError = await requireAuth();
+  if (authError) {
+    return authError;
+  }
+
   try {
     const { fechaCobro, concepto, importe, categoria } = await request.json();
 
