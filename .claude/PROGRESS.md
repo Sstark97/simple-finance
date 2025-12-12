@@ -45,7 +45,7 @@ La estructura de carpetas del proyecto, alineada con Next.js y la Arquitectura H
 │                                                                                        
 ├── domain/                                                                              
 │   ├── models/                                                                          
-│   │   ├── Transaction.ts                                                               
+│   │   ├── TransactionRawData.ts                                                               
 │   │   ├── Dashboard.ts                                                                 
 │   │   └── NetWorth.ts                                                                  
 │   └── services/                                                                        
@@ -87,7 +87,7 @@ indCSS/shadcn/ui, estilos globales, `ThemeProvider`).
 2.  **Arquitectura Hexagonal Implementada:**                                             
     *   Creación de la estructura de carpetas `domain/`, `application/`, `infrastructure/
 `.                                                                                       
-    *   Implementación de modelos de dominio (`Transaction`, `Dashboard`, `NetWorth`).   
+    *   Implementación de modelos de dominio (`TransactionRawData`, `Dashboard`, `NetWorth`).   
     *   Definición de interfaces de repositorios.                                        
     *   Implementación de casos de uso para las operaciones CRUD principales.            
                                                                                          

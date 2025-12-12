@@ -1,14 +1,20 @@
-/**
- * @file src/application/use-cases/GetTransactions.ts
- * @description Caso de uso para obtener todas las transacciones.
- */
-import { Transaction } from '@/lib/domain/models/Transaction';
 import { TransactionRepository } from '@/lib/application/repositories/TransactionRepository';
+import {Expense, ExpensesResult} from "@/lib/application/dtos/dtos";
+import {Transaction} from "@/lib/domain/models/Transaction";
 
 export class GetTransactions {
   constructor(private transactionRepository: TransactionRepository) {}
 
-  async execute(): Promise<Transaction[]> {
-    return this.transactionRepository.findAll();
+  async execute(): Promise<ExpensesResult> {
+    try {
+      const transactionRawData = await this.transactionRepository.findAll();
+      const transactions = transactionRawData.map((transactionRawData, index) => new Transaction({...transactionRawData, id: index}));
+      const expenses: Expense[] = transactions.map((transaction) => transaction.transformTransactionToExpense());
+      return {expenses};
+    } catch (err) {
+      const error = err instanceof Error ? err.message : 'Unknown error';
+      console.error('Error fetching transactions:', err);
+        return {expenses: [], error};
+    }
   }
 }

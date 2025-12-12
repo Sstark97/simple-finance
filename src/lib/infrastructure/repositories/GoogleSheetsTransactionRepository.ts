@@ -2,7 +2,7 @@
  * @file src/infrastructure/repositories/GoogleSheetsTransactionRepository.ts
  * @description Implementación del TransactionRepository utilizando Google Sheets.
  */
-import { Transaction } from '@/lib/domain/models/Transaction';
+import { TransactionRawData } from '@/lib/domain/models/TransactionRawData';
 import { TransactionRepository } from '@/lib/application/repositories/TransactionRepository';
 import sheets, { SPREADSHEET_ID } from '@/lib/infrastructure/google/sheetsClient';
 import { parseDayMonthYearString } from '@/lib/utils/dateParser';
@@ -10,11 +10,11 @@ import { SHEET_CONFIG } from '@/lib/config/sheets';
 
 export class GoogleSheetsTransactionRepository implements TransactionRepository {
   /**
-   * Mapea una fila de Google Sheet a un objeto Transaction.
+   * Mapea una fila de Google Sheet a un objeto TransactionRawData.
    * @param row Array de valores de una fila.
-   * @returns Objeto Transaction.
+   * @returns Objeto TransactionRawData.
    */
-  private mapRowToTransaction(row: string[]): Transaction {
+  private mapRowToTransaction(row: string[]): TransactionRawData {
     const amountStr = row[2] ?? '0';
     return {
       fechaCobro: parseDayMonthYearString(row[0]), // Usa la nueva función de parseo
@@ -29,7 +29,7 @@ export class GoogleSheetsTransactionRepository implements TransactionRepository 
    * @param transaction La transacción a añadir.
    * @returns La transacción añadida.
    */
-  async addTransaction(transaction: Omit<Transaction, 'fechaCobro'> & { fechaCobro: string }): Promise<Transaction> {
+  async addTransaction(transaction: Omit<TransactionRawData, 'fechaCobro'> & { fechaCobro: string }): Promise<TransactionRawData> {
     const config = SHEET_CONFIG.transactions;
     const row = [
       transaction.fechaCobro,
@@ -64,24 +64,19 @@ export class GoogleSheetsTransactionRepository implements TransactionRepository 
     if (!row || row.length === 0) return false;
 
     // Filtrar filas completamente vacías
-    if (!row.some(cell => typeof cell === 'string' && cell.trim() !== '')) {
+    if (!row.some(cell => cell.trim() !== '')) {
       return false;
     }
 
-    // Filtrar filas con errores de Google Sheets en la fecha
     const firstCell = row[0];
-    if (!firstCell || firstCell.startsWith('#REF!') || firstCell.startsWith('#N/A') || firstCell.startsWith('#ERROR!')) {
-      return false;
-    }
-
-    return true;
+    return !(!firstCell || firstCell.startsWith('#REF!') || firstCell.startsWith('#N/A') || firstCell.startsWith('#ERROR!'));
   }
 
   /**
    * Obtiene todas las transacciones.
    * @returns Un array con todas las transacciones.
    */
-  async findAll(): Promise<Transaction[]> {
+  async findAll(): Promise<TransactionRawData[]> {
     const config = SHEET_CONFIG.transactions;
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
@@ -105,6 +100,6 @@ export class GoogleSheetsTransactionRepository implements TransactionRepository 
           return null;
         }
       })
-      .filter((transaction): transaction is Transaction => transaction !== null && !isNaN(transaction.fechaCobro.getTime()));
+      .filter((transaction): transaction is TransactionRawData => transaction !== null && !isNaN(transaction.fechaCobro.getTime()));
   }
 }

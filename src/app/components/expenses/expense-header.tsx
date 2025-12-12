@@ -1,8 +1,9 @@
+import type {ReactNode} from "react";
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { FinanceButton } from '@/app/components/ui/finance-button';
 
-export function ExpenseHeader(): React.ReactNode {
+export function ExpenseHeader(): ReactNode {
   return (
     <header className="flex items-center justify-between">
       <div>

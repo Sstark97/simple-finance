@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Receipt, CreditCard } from 'lucide-react';
 import { FinanceCard, FinanceCardContent } from '@/app/components/ui/finance-card';
 import {CurrencyFormatter} from "@/lib/domain/services/currency-formatter";
@@ -37,7 +37,7 @@ function useCountUp(end: number, duration = 1000): number {
   return count;
 }
 
-export function ExpenseSummary({ totalAmount, transactionCount }: ExpenseSummaryProps): React.ReactNode {
+export function ExpenseSummary({ totalAmount, transactionCount }: ExpenseSummaryProps): ReactNode {
   const animatedTotal = useCountUp(totalAmount, 1200);
   const animatedCount = useCountUp(transactionCount, 800);
 

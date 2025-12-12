@@ -1,11 +1,11 @@
 import { describe, it, expect, vi } from 'vitest';
 import { GetTransactions } from '@/lib/application/use-cases/GetTransactions';
 import type { TransactionRepository } from '@/lib/application/repositories/TransactionRepository';
-import type { Transaction } from '@/lib/domain/models/Transaction';
+import type { TransactionRawData } from '@/lib/domain/models/TransactionRawData';
 
 describe('GetTransactions', () => {
   it('should return all transactions', async () => {
-    const mockTransactions: Transaction[] = [
+    const mockTransactions: TransactionRawData[] = [
       {
         fechaCobro: new Date('2025-12-01'),
         concepto: 'Supermercado',

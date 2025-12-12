@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { AddTransaction } from '@/lib/application/use-cases/AddTransaction';
 import { GetTransactions } from '@/lib/application/use-cases/GetTransactions';
 import { GoogleSheetsTransactionRepository } from '@/lib/infrastructure/repositories/GoogleSheetsTransactionRepository';
-import { Transaction } from '@/lib/domain/models/Transaction';
+import { TransactionRawData } from '@/lib/domain/models/TransactionRawData';
 import { requireAuth } from '@/lib/utils/authGuard';
 
 export async function GET() {
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     const transactionRepository = new GoogleSheetsTransactionRepository();
     const addTransactionUseCase = new AddTransaction(transactionRepository);
 
-    const newTransaction: Omit<Transaction, 'fechaCobro'> & { fechaCobro: string } = {
+    const newTransaction: Omit<TransactionRawData, 'fechaCobro'> & { fechaCobro: string } = {
         fechaCobro, // Ya viene como string YYYY-MM-DD
         concepto,
         importe,

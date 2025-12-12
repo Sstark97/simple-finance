@@ -1,13 +1,14 @@
+import type {ReactNode} from "react";
+import type {Expense} from "@/lib/application/dtos/dtos";
 import { cn } from '@/lib/utils';
 import { Calendar, Tag, FileText } from 'lucide-react';
-import type { Expense } from './utils';
 import {CurrencyFormatter} from "@/lib/domain/services/currency-formatter";
 
 interface ExpenseDataGridProps {
   expenses: Expense[];
 }
 
-export function ExpenseDataGrid({ expenses }: ExpenseDataGridProps): React.ReactNode {
+export function ExpenseDataGrid({ expenses }: ExpenseDataGridProps): ReactNode {
   if (expenses.length === 0) {
     return (
       <div className="rounded-xl border bg-card p-12 text-center">

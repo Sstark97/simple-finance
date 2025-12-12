@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { AddTransaction } from '@/lib/application/use-cases/AddTransaction';
 import type { TransactionRepository } from '@/lib/application/repositories/TransactionRepository';
-import type { Transaction } from '@/lib/domain/models/Transaction';
+import type { TransactionRawData } from '@/lib/domain/models/TransactionRawData';
 
 describe('AddTransaction', () => {
   it('should add a transaction successfully', async () => {
@@ -12,7 +12,7 @@ describe('AddTransaction', () => {
       categoria: 'Alimentación',
     };
 
-    const expectedTransaction: Transaction = {
+    const expectedTransaction: TransactionRawData = {
       fechaCobro: new Date('2025-12-08'),
       concepto: 'Supermercado',
       importe: 50.5,
@@ -40,7 +40,7 @@ describe('AddTransaction', () => {
       categoria: 'Entretenimiento',
     };
 
-    const expectedTransaction: Transaction = {
+    const expectedTransaction: TransactionRawData = {
       fechaCobro: new Date('2025-12-08'),
       concepto: 'Netflix',
       importe: 15.99,

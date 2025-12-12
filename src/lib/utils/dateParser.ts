@@ -34,6 +34,45 @@ export function parseMonthYearString(dateString: string): Date {
   return new Date(Date.UTC(year, monthIndex, 1));
 }
 
+export function parseDateFromSheet(dateString: string): Date {
+  const monthAbbreviations: Record<string, number> = {
+    'ene': 0, 'feb': 1, 'mar': 2, 'abr': 3, 'may': 4, 'jun': 5,
+    'jul': 6, 'ago': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dic': 11
+  };
+
+  // Check if it's in short format: "10 dic 2025" (day abbreviatedMonth year)
+  const shortFormatMatch = dateString.match(/^(\d{1,2})\s+([a-záéíóú]+)\s+(\d{4})$/i);
+  if (shortFormatMatch) {
+    const day = parseInt(shortFormatMatch[1], 10);
+    const monthAbbr = shortFormatMatch[2].toLowerCase();
+    const year = parseInt(shortFormatMatch[3], 10);
+    const monthNames = [
+      'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+      'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+    ];
+
+    // Try abbreviated month first
+    let monthIndex = monthAbbreviations[monthAbbr];
+
+    // If not found, try full month name
+    if (monthIndex === undefined) {
+      monthIndex = monthNames.indexOf(monthAbbr);
+    }
+
+    if (monthIndex === undefined || monthIndex === -1) {
+      throw new Error(`Invalid month: ${monthAbbr}. Must be a Spanish month name or abbreviation`);
+    }
+    if (isNaN(day) || day < 1 || day > 31) {
+      throw new Error(`Invalid day: ${shortFormatMatch[1]}. Must be between 1 and 31`);
+    }
+    if (isNaN(year)) {
+      throw new Error(`Invalid year: ${shortFormatMatch[3]}`);
+    }
+
+    return new Date(Date.UTC(year, monthIndex, day));
+  }
+}
+
 /**
  * Parses a day-month-year string in various formats into a Date object
  * @param dateString - Date string in format "DD/MM/YYYY", "DD/MM/YY", or "D de mes de YYYY"

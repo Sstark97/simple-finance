@@ -5,7 +5,7 @@ import { signIn } from '@/lib/infrastructure/auth/client';
 import { FinanceButton } from '@/app/components/ui/finance-button';
 import { Spinner } from '@/app/components/ui/spinner';
 
-export function GoogleSignInButton(): JSX.Element {
+export function GoogleSignInButton(){
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleGoogleSignIn = async (): Promise<void> => {

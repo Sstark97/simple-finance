@@ -1,16 +1,17 @@
+import type {ReactNode} from "react";
 import { FinanceCard, FinanceCardContent, FinanceCardDescription, FinanceCardHeader, FinanceCardTitle } from '@/app/components/ui/finance-card';
-import { GoogleSignInButton } from './GoogleSignInButton';
+import { GoogleSignInButton } from '@/app/components/GoogleSignInButton';
 
 export default async function LoginPage({
   searchParams,
 }: {
   searchParams?: Promise<{ error?: string }>;
-}): Promise<React.ReactNode> {
+}): Promise<ReactNode> {
   const params = await searchParams;
   const errorParam = params?.error;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background to-muted p-4">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-background to-muted p-4">
       <FinanceCard className="w-full max-w-md" elevated>
         <FinanceCardHeader className="space-y-2">
           <FinanceCardTitle className="text-2xl font-bold">

@@ -82,7 +82,7 @@ useEffect(() => { fetch('/api/transactions') }, [])
 **Después:**
 ```typescript
 // Server Component - sin 'use client'
-export default async function GastosPage() {
+export default async function ExpensesPage() {
   const repository = new GoogleSheetsTransactionRepository();
   const useCase = new GetTransactions(repository);
   const transactions = await useCase.execute();

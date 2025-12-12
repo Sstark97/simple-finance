@@ -1,9 +1,9 @@
 'use client';
 
-import type { Transaction } from '@/lib/domain/models/Transaction';
+import type { TransactionRawData } from '@/lib/domain/models/TransactionRawData';
 
 interface TransactionsTableProps {
-  data: Transaction[];
+  data: TransactionRawData[];
 }
 
 export function TransactionsTable({ data }: TransactionsTableProps): React.ReactNode {
