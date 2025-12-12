@@ -2,11 +2,11 @@
  * @file src/infrastructure/repositories/GoogleSheetsTransactionRepository.ts
  * @description Implementación del TransactionRepository utilizando Google Sheets.
  */
-import { TransactionRawData } from '@/lib/domain/models/TransactionRawData';
 import { TransactionRepository } from '@/lib/application/repositories/TransactionRepository';
 import sheets, { SPREADSHEET_ID } from '@/lib/infrastructure/google/sheetsClient';
 import { parseDayMonthYearString } from '@/lib/utils/dateParser';
 import { SHEET_CONFIG } from '@/lib/config/sheets';
+import type {TransactionRawData} from "@/lib/application/dtos/dtos";
 
 export class GoogleSheetsTransactionRepository implements TransactionRepository {
   /**
@@ -17,6 +17,7 @@ export class GoogleSheetsTransactionRepository implements TransactionRepository 
   private mapRowToTransaction(row: string[]): TransactionRawData {
     const amountStr = row[2] ?? '0';
     return {
+      id: 0,
       fechaCobro: parseDayMonthYearString(row[0]), // Usa la nueva función de parseo
       concepto: row[1] ?? '',
       importe: parseFloat(amountStr.replace(',', '.')),

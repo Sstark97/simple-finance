@@ -1,6 +1,6 @@
 'use client';
 
-import type { TransactionRawData } from '@/lib/domain/models/TransactionRawData';
+import type {TransactionRawData} from "@/lib/application/dtos/dtos";
 
 interface TransactionsTableProps {
   data: TransactionRawData[];

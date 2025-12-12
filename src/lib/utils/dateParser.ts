@@ -59,18 +59,10 @@ export function parseDateFromSheet(dateString: string): Date {
       monthIndex = monthNames.indexOf(monthAbbr);
     }
 
-    if (monthIndex === undefined || monthIndex === -1) {
-      throw new Error(`Invalid month: ${monthAbbr}. Must be a Spanish month name or abbreviation`);
-    }
-    if (isNaN(day) || day < 1 || day > 31) {
-      throw new Error(`Invalid day: ${shortFormatMatch[1]}. Must be between 1 and 31`);
-    }
-    if (isNaN(year)) {
-      throw new Error(`Invalid year: ${shortFormatMatch[3]}`);
-    }
-
     return new Date(Date.UTC(year, monthIndex, day));
   }
+
+  return new Date();
 }
 
 /**

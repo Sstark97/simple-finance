@@ -2,7 +2,7 @@
  * @file src/application/repositories/TransactionRepository.ts
  * @description Define la interfaz para el repositorio de Transacciones.
  */
-import { TransactionRawData } from '@/lib/domain/models/TransactionRawData';
+import {TransactionRawData} from "@/lib/application/dtos/dtos";
 
 export interface TransactionRepository {
   /**

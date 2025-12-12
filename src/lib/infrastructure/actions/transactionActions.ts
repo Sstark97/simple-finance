@@ -50,6 +50,7 @@ export async function addTransaction(prevState: FormState, formData: FormData): 
 
     // Nuestro formulario de ejemplo solo añade gastos.
     const transactionData = {
+        id: 0,
         concepto: description,
         importe: amount,
         fechaCobro: date,
