@@ -17,7 +17,7 @@ export default defineConfig({
         'tests/',
         '**/*.config.*',
         '**/*.d.ts',
-        'src/app/(components)/ui/**',
+        'src/app/components/ui/**',
       ],
     },
   },
