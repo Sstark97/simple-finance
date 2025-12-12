@@ -1,11 +1,6 @@
 import { NetWorthRepository } from '@/lib/application/repositories/NetWorthRepository';
-import {NetWorth} from "@/lib/domain/models/NetWorth";
-import {PatrimonioDto} from "@/lib/application/dtos/dtos";
-
-export type PatrimonioResult = {
-  patrimonio: PatrimonioDto[];
-  error?: string;
-}
+import type {NetWorth} from "@/lib/domain/models/NetWorth";
+import type {PatrimonioDto, PatrimonioResult} from "@/lib/application/dtos/dtos";
 
 export class GetNetWorthHistory {
   constructor(private netWorthRepository: NetWorthRepository) {}
@@ -13,19 +8,22 @@ export class GetNetWorthHistory {
   async execute(): Promise<PatrimonioResult> {
     try {
       const history = await this.netWorthRepository.findAll();
-      const patrimonio =  history.map((nw) => this.transformNetWorthToData(nw))
-          .toSorted((a, b) => {
-            const aDate = new Date(a.mes);
-            const bDate = new Date(b.mes);
-            return aDate.getTime() - bDate.getTime();
-          });
-        return { patrimonio };
+      return { patrimonio: this.getPatrimonioSortedFrom(history) };
     } catch (err) {
       const error = err instanceof Error ? err.message : 'Unknown error';
       console.error('Error fetching net worth history:', err);
         return { patrimonio: [], error };
     }
   }
+
+    private getPatrimonioSortedFrom = (history: NetWorth[]) => {
+        return history.map((nw) => this.transformNetWorthToData(nw))
+            .toSorted((a, b) => {
+                const aDate = new Date(a.mes);
+                const bDate = new Date(b.mes);
+                return aDate.getTime() - bDate.getTime();
+            });
+    }
 
     private transformNetWorthToData(netWorth: NetWorth): PatrimonioDto {
         const total = Number.isFinite(netWorth.total) ? netWorth.total : 0;

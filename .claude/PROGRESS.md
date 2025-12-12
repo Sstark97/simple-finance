@@ -133,7 +133,7 @@ utilizando `searchParams` para el mes seleccionado.
     *   Los formularios (`TransactionForm`, `MonthlySettingsForm`, `NetWorthForm`) se han
  extraído como Client Components independientes.                                         
     *   Implementación de Server Actions para `addTransaction`, `updateMonthlySettings` y
- `updateNetWorth`, manejando la validación con Zod y la revalidación de caché con `reval
+ `saveNetWorth`, manejando la validación con Zod y la revalidación de caché con `reval
 idatePath`.                                                                             
     *   `DashboardHeader` refactorizado para ser un Client Component y usar `useRouter` p
 ara actualizar los `searchParams` de la URL al cambiar el mes.                           

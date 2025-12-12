@@ -19,7 +19,7 @@ export interface NetWorthRepository {
    * @param invertido Nuevo valor de "invertido".
    * @returns El patrimonio neto actualizado o creado.
    */
-  updateNetWorth(
+  saveNetWorth(
     month: Date,
     hucha: number,
     invertido: number

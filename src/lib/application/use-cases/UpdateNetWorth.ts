@@ -14,6 +14,6 @@ export class UpdateNetWorth {
     invertido: number
   ): Promise<NetWorth> {
     // Aquí podrías añadir lógica de negocio adicional, como validaciones.
-    return this.netWorthRepository.updateNetWorth(month, hucha, invertido);
+    return this.netWorthRepository.saveNetWorth(month, hucha, invertido);
   }
 }

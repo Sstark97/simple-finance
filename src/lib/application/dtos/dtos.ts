@@ -4,3 +4,8 @@ export interface PatrimonioDto {
     hucha: number;
     invertido: number;
 }
+
+export type PatrimonioResult = {
+    patrimonio: PatrimonioDto[];
+    error?: string;
+}
