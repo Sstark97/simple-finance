@@ -1,5 +1,5 @@
 "use client";
-import {Skeleton} from "@/app/(components)/ui/skeleton";
+import {Skeleton} from "@/app/components/ui/skeleton";
 import { useEffect, useState } from "react";
 
 export const NoDataIntoDashBoard = () => {

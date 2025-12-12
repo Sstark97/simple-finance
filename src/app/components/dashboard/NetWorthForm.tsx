@@ -2,8 +2,8 @@
 
 import { useActionState, useEffect, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
-import { FinanceInput } from '@/app/(components)/ui/finance-input';
-import { FinanceButton } from '@/app/(components)/ui/finance-button';
+import { FinanceInput } from '@/app/components/ui/finance-input';
+import { FinanceButton } from '@/app/components/ui/finance-button';
 import { Plus, Loader2 } from 'lucide-react';
 import { toast } from "sonner";
 import { updateNetWorth, NetWorthFormState } from '@/lib/infrastructure/actions/netWorthActions';

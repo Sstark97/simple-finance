@@ -9,26 +9,26 @@ import { MonthlySettingsForm } from './MonthlySettingsForm';
 import { NetWorthForm } from './NetWorthForm';
 
 // Import v0 components
-import { DashboardHeader } from "@/app/(components)/dashboard/dashboard-header";
-import { KPICard } from "@/app/(components)/dashboard/kpi-card";
-import { IncomeExpenseChart } from "@/app/(components)/dashboard/income-expense-chart";
-import { BalanceGoalsChart } from "@/app/(components)/dashboard/balance-goals-chart";
-import { NavigationCards } from "@/app/(components)/dashboard/navigation-cards";
-import { TransactionForm } from "@/app/(components)/dashboard/transaction-form";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/(components)/ui/tabs";
+import { DashboardHeader } from "@/app/components/dashboard/dashboard-header";
+import { KPICard } from "@/app/components/dashboard/kpi-card";
+import { IncomeExpenseChart } from "@/app/components/dashboard/income-expense-chart";
+import { BalanceGoalsChart } from "@/app/components/dashboard/balance-goals-chart";
+import { NavigationCards } from "@/app/components/dashboard/navigation-cards";
+import { TransactionForm } from "@/app/components/dashboard/transaction-form";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
 import {
     FinanceCard,
     FinanceCardHeader,
     FinanceCardTitle,
     FinanceCardDescription,
     FinanceCardContent,
-} from "@/app/(components)/ui/finance-card";
-import { FinanceButton } from "@/app/(components)/ui/finance-button";
-import { FinanceInput } from "@/app/(components)/ui/finance-input";
+} from "@/app/components/ui/finance-card";
+import { FinanceButton } from "@/app/components/ui/finance-button";
+import { FinanceInput } from "@/app/components/ui/finance-input";
 import { cn } from "@/lib/utils";
 import { Plus, ArrowUpCircle, ArrowDownCircle, Target, Loader2 } from "lucide-react";
-import { Skeleton } from "@/app/(components)/ui/skeleton";
-import { Empty } from "@/app/(components)/ui/empty";
+import { Skeleton } from "@/app/components/ui/skeleton";
+import { Empty } from "@/app/components/ui/empty";
 
 // Función para obtener el mes en formato YYYY-MM
 const getYearMonth = (date: Date) => date.toISOString().slice(0, 7);

@@ -8,9 +8,9 @@ import {
   FinanceCardTitle,
   FinanceCardDescription,
   FinanceCardContent,
-} from "@/app/(components)/ui/finance-card"
+} from "@/app/components/ui/finance-card"
 import { cn } from "@/lib/utils"
-import { formatCurrency } from "@/lib/utils/formatting"
+import {CurrencyFormatter} from "@/lib/domain/services/currency-formatter";
 
 const BALANCE_COLOR = "#3b82f6" // Un azul más vivo
 const GOALS_COLOR = "#F59E0B"
@@ -47,7 +47,7 @@ export function BalanceGoalsChart({ balance, savings, investment }: BalanceGoals
       <FinanceCardHeader>
         <FinanceCardTitle>Balance vs Objetivos</FinanceCardTitle>
         <FinanceCardDescription>
-          Ahorro ({formatCurrency(savings)}) + Inversión ({formatCurrency(investment)})
+          Ahorro ({CurrencyFormatter.toEur(savings)}) + Inversión ({CurrencyFormatter.toEur(investment)})
         </FinanceCardDescription>
       </FinanceCardHeader>
       <FinanceCardContent>
@@ -72,7 +72,7 @@ export function BalanceGoalsChart({ balance, savings, investment }: BalanceGoals
                     <div className="rounded-lg border bg-card p-3 shadow-lg">
                       <p className="text-sm font-medium">{data.name}</p>
                       <p className="text-lg font-bold" style={{ color: data.color }}>
-                        {formatCurrency(data.value)}
+                        {CurrencyFormatter.toEur(data.value)}
                       </p>
                     </div>
                   )
@@ -109,7 +109,7 @@ export function BalanceGoalsChart({ balance, savings, investment }: BalanceGoals
             <span className="text-sm text-muted-foreground">Diferencia</span>
             <span className={cn("text-sm font-semibold", balance >= goals ? "text-[#10B981]" : "text-[#F59E0B]")}>
               {balance >= goals ? "+" : ""}
-              {formatCurrency(balance - goals)}
+              {CurrencyFormatter.toEur(balance - goals)}
             </span>
           </div>
           <p className="text-xs text-muted-foreground mt-1">

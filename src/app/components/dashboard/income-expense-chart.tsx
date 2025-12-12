@@ -8,9 +8,9 @@ import {
   FinanceCardTitle,
   FinanceCardDescription,
   FinanceCardContent,
-} from "@/app/(components)/ui/finance-card"
+} from "@/app/components/ui/finance-card"
 import { cn } from "@/lib/utils"
-import { formatCurrency } from "@/lib/utils/formatting"
+import {CurrencyFormatter} from "@/lib/domain/services/currency-formatter";
 
 const INCOME_COLOR = "#10B981"
 const EXPENSE_COLOR = "#EF4444"
@@ -87,7 +87,7 @@ export function IncomeExpenseChart({ income, expenses }: IncomeExpenseChartProps
                     <div className="rounded-lg border bg-card p-3 shadow-lg">
                       <p className="text-sm font-medium">{data.name}</p>
                       <p className="text-lg font-bold" style={{ color: data.color }}>
-                        {formatCurrency(data.value)}
+                        {CurrencyFormatter.toEur(data.value)}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {((data.value / (income + expenses)) * 100).toFixed(1)}% del total
@@ -104,7 +104,7 @@ export function IncomeExpenseChart({ income, expenses }: IncomeExpenseChartProps
             <div className="text-center">
               <p className="text-xs text-muted-foreground uppercase tracking-wide">Balance</p>
               <p className={cn("text-xl font-bold", balance >= 0 ? "text-success" : "text-destructive")}>
-                {formatCurrency(balance)}
+                {CurrencyFormatter.toEur(balance)}
               </p>
             </div>
           </div>

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { cn } from "@/lib/utils"
 import { authClient } from '@/lib/infrastructure/auth/client';
-import { Button } from "@/app/(components)/ui/button";
+import { Button } from "@/app/components/ui/button";
 import { LogOut } from 'lucide-react';
 
 interface DashboardHeaderProps {

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { MoneyDisplay } from "@/app/(components)/ui/money-display"
+import { MoneyDisplay } from "@/app/components/ui/money-display"
 import { cn } from "@/lib/utils"
 import { Sparkles } from "lucide-react"
 
