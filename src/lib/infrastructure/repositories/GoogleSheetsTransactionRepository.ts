@@ -5,7 +5,7 @@
 import { TransactionRepository } from '@/lib/application/repositories/TransactionRepository';
 import sheets, { SPREADSHEET_ID } from '@/lib/infrastructure/google/sheetsClient';
 import { parseDayMonthYearString } from '@/lib/utils/dateParser';
-import { SHEET_CONFIG } from '@/lib/config/sheets';
+import { SHEET_CONFIG } from '@/lib/infrastructure/google/sheets';
 import type {TransactionRaw} from "@/lib/application/dtos/dtos";
 
 export class GoogleSheetsTransactionRepository implements TransactionRepository {

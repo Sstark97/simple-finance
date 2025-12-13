@@ -2,7 +2,7 @@ import {NetWorth} from '@/lib/domain/models/NetWorth';
 import {NetWorthRepository} from '@/lib/application/repositories/NetWorthRepository';
 import {GoogleSheetClient} from '@/lib/infrastructure/google/sheetsClient';
 import {formatMonthForSheet, parseMonthYearString} from '@/lib/utils/dateParser';
-import {SHEET_CONFIG} from '@/lib/config/sheets';
+import {SHEET_CONFIG} from '@/lib/infrastructure/google/sheets';
 
 
 export class GoogleSheetsNetWorthRepository implements NetWorthRepository {

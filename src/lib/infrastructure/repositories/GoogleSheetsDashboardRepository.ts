@@ -6,7 +6,7 @@ import { Dashboard } from '@/lib/domain/models/Dashboard';
 import { DashboardRepository } from '@/lib/application/repositories/DashboardRepository';
 import sheets, { SPREADSHEET_ID } from '@/lib/infrastructure/google/sheetsClient';
 import { formatMonthForSheet, parseMonthYearString } from '@/lib/utils/dateParser';
-import { SHEET_CONFIG } from '@/lib/config/sheets';
+import { SHEET_CONFIG } from '@/lib/infrastructure/google/sheets';
 
 
 export class GoogleSheetsDashboardRepository implements DashboardRepository {

@@ -1,20 +1,14 @@
-import { sheets_v4 } from '@googleapis/sheets';
-import { GoogleAuth } from 'google-auth-library';
-import path from 'path';
+import {sheets_v4} from '@googleapis/sheets';
+import {JWT} from 'google-auth-library';
 
-// Lee las credenciales del fichero JSON.
-const KEYFILEPATH = path.join(process.cwd(), 'credentials.json');
+const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY || '{}');
 
-// Define el alcance (scope) de los permisos.
-const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
-
-// Crea una nueva instancia de autenticación.
-const auth = new GoogleAuth({
-  keyFile: KEYFILEPATH,
-  scopes: SCOPES,
+const auth = new JWT({
+  email: credentials.client_email,
+  key: credentials.private_key,
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
-// Obtiene el cliente de Google Sheets.
 const sheets = new sheets_v4.Sheets({ auth });
 
 export const SPREADSHEET_ID = process.env.NEXT_PUBLIC_SPREADSHEET_ID;
