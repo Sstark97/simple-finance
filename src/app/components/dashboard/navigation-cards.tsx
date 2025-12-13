@@ -5,7 +5,7 @@ import type React from "react"
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { History, TrendingUp, ArrowRight } from "lucide-react"
-import { cn } from "@/lib/utils"
+import {cn} from "@/app/components/tailwind-functions";
 
 interface NavigationCardProps {
   title: string

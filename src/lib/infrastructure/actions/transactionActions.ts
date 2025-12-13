@@ -1,37 +1,25 @@
 'use server';
 
-/**
- * @file lib/infrastructure/actions/transactionActions.ts
- * @description Server Action para gestionar las transacciones.
- */
-
 import { revalidatePath } from 'next/cache';
 import { AddTransactionSchema } from '@/lib/application/use-cases/AddTransaction.schema';
 import { AddTransaction } from '@/lib/application/use-cases/AddTransaction';
 import { GoogleSheetsTransactionRepository } from '@/lib/infrastructure/repositories/GoogleSheetsTransactionRepository';
-import { TransactionFormState } from '@/lib/types/formState';
+import { TransactionFormState } from '@/lib/infrastructure/types/formState';
 
-// Re-export for backward compatibility
 export type FormState = TransactionFormState;
-
-// Instanciamos nuestras dependencias. En una app más grande, esto se haría
-// con un contenedor de Inyección de Dependencias (DI).
 const transactionRepository = new GoogleSheetsTransactionRepository();
 const addTransactionUseCase = new AddTransaction(transactionRepository);
 
 export async function addTransaction(prevState: FormState, formData: FormData): Promise<TransactionFormState> {
-  // 1. Validar los datos del formulario con Zod
   const validatedFields = AddTransactionSchema.safeParse({
     description: formData.get('description'),
     amount: formData.get('amount'),
     date: formData.get('date'),
   });
 
-  // 2. Si la validación falla, devolver los errores inmediatamente.
   if (!validatedFields.success) {
     const fieldErrors = validatedFields.error.flatten().fieldErrors;
 
-    // Map schema field names to transaction form field names
     const mappedErrors: TransactionFormState['errors'] = {
       concepto: fieldErrors.description,
       importe: fieldErrors.amount,
@@ -44,11 +32,9 @@ export async function addTransaction(prevState: FormState, formData: FormData): 
     };
   }
 
-  // 3. Si la validación es exitosa, llamar al caso de uso.
   try {
     const { description, amount, date } = validatedFields.data;
 
-    // Nuestro formulario de ejemplo solo añade gastos.
     const transactionData = {
         concepto: description,
         importe: amount,

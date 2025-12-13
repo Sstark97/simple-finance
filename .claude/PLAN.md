@@ -394,7 +394,7 @@ Crear `src/app/login/page.tsx` con botón de Google Sign-In.
   - Domain model: `src/lib/domain/models/User.ts`
   - Port interface: `src/lib/application/ports/IAuthenticationService.ts`
   - Use case: `src/lib/application/use-cases/VerifyAuthentication.ts`
-  - Adapter: `src/lib/infrastructure/adapters/BetterAuthAdapter.ts`
+  - Adapter: `src/lib/infrastructure/adapters/BetterAuthRepository.ts`
 - ✓ Creado middleware simplificado basado en cookies: `src/middleware.ts`
 - ✓ Creado auth guard para API routes: `src/lib/utils/authGuard.ts`
 - ✓ Protegidos todos los API routes con autenticación + autorización
@@ -402,7 +402,7 @@ Crear `src/app/login/page.tsx` con botón de Google Sign-In.
 - ✓ Agregado `auth.db` a `.gitignore`
 - ✓ Tests unitarios (36 tests):
   - `tests/contexts/application/VerifyAuthentication.test.ts` (8 tests)
-  - `tests/contexts/infrastructure/BetterAuthAdapter.test.ts` (21 tests)
+  - `tests/contexts/infrastructure/BetterAuthRepository.test.ts` (21 tests)
 - ✓ Test E2E: `tests/app/authentication.spec.ts`
 - ✓ Documentación completa de arquitectura: `docs/authentication-architecture.md`
 - ✓ Build exitoso, 0 errores TypeScript

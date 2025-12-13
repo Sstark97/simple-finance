@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { BetterAuthAdapter } from '@/lib/infrastructure/adapters/BetterAuthAdapter';
+import { BetterAuthRepository } from '@/lib/infrastructure/repositories/BetterAuthRepository';
 import type { User } from '@/lib/domain/models/User';
 
 vi.mock('next/headers', () => ({
@@ -16,7 +16,7 @@ vi.mock('@/lib/infrastructure/auth/better-auth.config', () => ({
 }));
 
 describe('BetterAuthAdapter', () => {
-  let adapter: BetterAuthAdapter;
+  let adapter: BetterAuthRepository;
   let mockHeaders: ReturnType<typeof vi.fn>;
   let mockAuth: {
     api: {
@@ -52,7 +52,7 @@ describe('BetterAuthAdapter', () => {
 
     mockHeaders.mockResolvedValue(new Headers());
 
-    adapter = new BetterAuthAdapter();
+    adapter = new BetterAuthRepository();
   });
 
   afterEach(() => {

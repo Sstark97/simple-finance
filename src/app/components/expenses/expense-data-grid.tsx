@@ -1,6 +1,6 @@
 import type {ReactNode} from "react";
 import type {Expense} from "@/lib/application/dtos/dtos";
-import { cn } from '@/lib/utils';
+import { cn } from '@/app/components/tailwind-functions';
 import { Calendar, Tag, FileText } from 'lucide-react';
 import {CurrencyFormatter} from "@/lib/domain/services/currency-formatter";
 

@@ -1,6 +1,6 @@
 import type { User, Session } from '@/lib/domain/models/User';
 
-export interface IAuthenticationService {
+export interface AuthenticationRepository {
   getCurrentUser(): Promise<User | null>;
   getSession(): Promise<Session | null>;
   isAuthenticated(): Promise<boolean>;

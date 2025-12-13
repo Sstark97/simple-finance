@@ -1,6 +1,6 @@
 'use client';
 
-import { usePWA } from '@/lib/hooks/usePWA';
+import { usePWA } from '@/hooks/usePWA';
 
 export function PWAProvider(): null {
   usePWA();

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { cn } from "@/lib/utils"
+import { cn } from "@/app/components/tailwind-functions";
 import { authClient } from '@/lib/infrastructure/auth/client';
 import { Button } from "@/app/components/ui/button";
 import { LogOut } from 'lucide-react';
@@ -46,7 +46,7 @@ export function DashboardHeader({ selectedMonth }: DashboardHeaderProps) {
         <div className="flex items-center gap-2">
           <label htmlFor="month-select" className="text-sm font-medium text-muted-foreground">Mes:</label>
           <input
-              type="date"
+              type="month"
               id="month-select"
               value={selectedMonth}
               onChange={handleMonthChange}

@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/app/components/theme-provider";
 import { PWAProvider } from "@/app/components/PWAProvider";
-import { cn } from "@/lib/utils";
+import { cn } from "@/app/components/tailwind-functions";
 
 const fontSans = Inter({
   subsets: ["latin"],

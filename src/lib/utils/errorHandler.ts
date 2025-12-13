@@ -1,27 +1,12 @@
-/**
- * @file src/lib/utils/errorHandler.ts
- * @description Utility functions for handling errors, especially Google Sheets API errors
- */
-
-/**
- * Standard error response type
- */
 export type ErrorResponse = {
   code: number
   message: string
 }
 
-/**
- * Handles Google Sheets API errors and returns a standardized error response
- * @param error - The error object (unknown type from catch block)
- * @returns Standardized error response with HTTP code and message
- */
 export function handleGoogleSheetsError(error: unknown): ErrorResponse {
-  // Handle Error instances
   if (error instanceof Error) {
     const errorMessage = error.message.toLowerCase();
 
-    // Permission errors (403)
     if (errorMessage.includes('permission') || errorMessage.includes('forbidden')) {
       return {
         code: 403,
@@ -29,7 +14,6 @@ export function handleGoogleSheetsError(error: unknown): ErrorResponse {
       };
     }
 
-    // Not found errors (404)
     if (errorMessage.includes('not found') || errorMessage.includes('file not found')) {
       return {
         code: 404,
@@ -37,7 +21,6 @@ export function handleGoogleSheetsError(error: unknown): ErrorResponse {
       };
     }
 
-    // Authentication errors (401)
     if (errorMessage.includes('invalid_grant') || errorMessage.includes('authentication')) {
       return {
         code: 401,
@@ -45,7 +28,6 @@ export function handleGoogleSheetsError(error: unknown): ErrorResponse {
       };
     }
 
-    // Rate limit errors (429)
     if (errorMessage.includes('rate limit') || errorMessage.includes('quota')) {
       return {
         code: 429,
@@ -53,14 +35,12 @@ export function handleGoogleSheetsError(error: unknown): ErrorResponse {
       };
     }
 
-    // Generic error with the original message
     return {
       code: 500,
       message: `Error de Google Sheets: ${error.message}`,
     };
   }
 
-  // Handle objects with code property
   if (typeof error === 'object' && error !== null && 'code' in error) {
     const errorCode = (error as { code: unknown }).code;
 
@@ -79,22 +59,8 @@ export function handleGoogleSheetsError(error: unknown): ErrorResponse {
     }
   }
 
-  // Fallback for unknown errors
   return {
     code: 500,
     message: 'Error desconocido al acceder a Google Sheets.',
   };
-}
-
-/**
- * Logs an error with context information
- * @param context - Context where the error occurred (e.g., "GetExpenses")
- * @param error - The error object
- */
-export function logError(context: string, error: unknown): void {
-  console.error(`[${context}]`, error);
-
-  if (error instanceof Error) {
-    console.error('Error stack:', error.stack);
-  }
 }

@@ -48,6 +48,8 @@ export default async function DashboardView({
     dateToFetch = new Date(today.getFullYear(), today.getMonth(), 1);
     selectedMonthString = getYearMonth(dateToFetch);
   }
+
+  console.log(selectedMonthString);
   
   // Asegurarnos de que usamos el primer día del date para la búsqueda.
   dateToFetch.setDate(1);
@@ -81,14 +83,14 @@ export default async function DashboardView({
 
   // Pre-fill forms with fetched data (for server components, this data will be rendered directly)
   const initialMonthlySettings = {
-    month: dashboardData ? getYearMonth(dashboardData.mes) : getYearMonth(new Date()),
+    date: dashboardData ? getYearMonth(dashboardData.mes) : getYearMonth(new Date()),
     income: dashboardData?.ingresos ?? 0,
     saving: dashboardData?.ahorro ?? 0,
     investment: dashboardData?.inversion ?? 0,
   };
 
   const initialNetWorth = {
-    month: dashboardData ? getYearMonth(dashboardData.mes) : getYearMonth(new Date()),
+    date: dashboardData ? getYearMonth(dashboardData.mes) : getYearMonth(new Date()),
     saving: 0,
     investment: 0,
   };

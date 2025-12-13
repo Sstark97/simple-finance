@@ -36,7 +36,7 @@ src/lib/
 │       └── VerifyAuthentication.ts    # Authentication business logic
 └── infrastructure/
     └── adapters/
-        ├── BetterAuthAdapter.ts       # Better Auth implementation
+        ├── BetterAuthRepository.ts       # Better Auth implementation
         ├── ClerkAdapter.ts            # Clerk implementation (example)
         └── NextAuthAdapter.ts         # NextAuth implementation (example)
 ```
@@ -140,8 +140,8 @@ Change the adapter used in your application:
 
 ```typescript
 // Before (Better Auth)
-import { BetterAuthAdapter } from '@/lib/infrastructure/adapters/BetterAuthAdapter';
-const authService = new BetterAuthAdapter();
+import { BetterAuthRepository } from '@/lib/infrastructure/adapters/BetterAuthRepository';
+const authService = new BetterAuthRepository();
 
 // After (Clerk)
 import { ClerkAuthenticationAdapter } from '@/lib/infrastructure/adapters/ClerkAuthAdapter';
@@ -160,7 +160,7 @@ Your use cases, API routes, and components continue to work without modification
 import { auth } from '@/lib/auth';
 import type { IAuthenticationService } from '@/lib/application/ports/IAuthenticationService';
 
-export class BetterAuthAdapter implements IAuthenticationService {
+export class BetterAuthRepository implements IAuthenticationService {
   async getCurrentUser(): Promise<User | null> {
     const session = await auth.api.getSession({ headers: await headers() });
     // Better Auth specific logic

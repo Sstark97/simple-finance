@@ -9,7 +9,7 @@ import {
   FinanceCardDescription,
   FinanceCardContent,
 } from "@/app/components/ui/finance-card"
-import { cn } from "@/lib/utils"
+import { cn } from "@/app/components/tailwind-functions";
 import {CurrencyFormatter} from "@/lib/domain/services/currency-formatter";
 
 const BALANCE_COLOR = "#3b82f6" // Un azul más vivo

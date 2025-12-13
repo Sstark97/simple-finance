@@ -1,9 +1,9 @@
-import type { IAuthenticationService } from '@/lib/application/ports/IAuthenticationService';
+import type { AuthenticationRepository } from '@/lib/application/repositories/AuthenticationRepository';
 import type { User, Session } from '@/lib/domain/models/User';
 import { getAuthInstance } from '../auth/better-auth.config';
 import { headers } from 'next/headers';
 
-export class BetterAuthAdapter implements IAuthenticationService {
+export class BetterAuthRepository implements AuthenticationRepository {
   async getCurrentUser(): Promise<User | null> {
     try {
       const auth = getAuthInstance();

@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { VerifyAuthentication } from '@/lib/application/use-cases/VerifyAuthentication';
-import type { IAuthenticationService } from '@/lib/application/ports/IAuthenticationService';
+import type { AuthenticationRepository } from '@/lib/application/repositories/AuthenticationRepository';
 import type { User } from '@/lib/domain/models/User';
 
 describe('VerifyAuthentication', () => {
-  let mockAuthService: IAuthenticationService;
+  let mockAuthService: AuthenticationRepository;
   let useCase: VerifyAuthentication;
 
   const allowedEmail: string = 'allowed@example.com';

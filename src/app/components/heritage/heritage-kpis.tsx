@@ -3,7 +3,7 @@
 import {ReactNode, useEffect, useState} from 'react';
 import { Wallet, TrendingUp, TrendingDown } from 'lucide-react';
 import { FinanceCard, FinanceCardContent } from '@/app/components/ui/finance-card';
-import { cn } from '@/lib/utils';
+import { cn } from '@/app/components/tailwind-functions';
 import {CurrencyFormatter} from "@/lib/domain/services/currency-formatter";
 
 interface HeritageKPIsProps {

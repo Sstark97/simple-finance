@@ -1,8 +1,8 @@
-import type { IAuthenticationService } from '../ports/IAuthenticationService';
+import type { AuthenticationRepository } from '../repositories/AuthenticationRepository';
 import type { User } from '@/lib/domain/models/User';
 
 export class VerifyAuthentication {
-  constructor(private authService: IAuthenticationService) {}
+  constructor(private authService: AuthenticationRepository) {}
 
   async execute(): Promise<User | null> {
     const isAuthenticated = await this.authService.isAuthenticated();

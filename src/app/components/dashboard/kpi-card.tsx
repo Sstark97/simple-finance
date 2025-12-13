@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { MoneyDisplay } from "@/app/components/ui/money-display"
-import { cn } from "@/lib/utils"
+import { cn } from "@/app/components/tailwind-functions";
 import { Sparkles } from "lucide-react"
 
 interface KPICardProps {
@@ -30,7 +30,7 @@ export function KPICard({ amount, label, description }: KPICardProps) {
       )}
     >
       {/* Decorative gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#10B981]/5 via-transparent to-[#0A2A54]/5" />
+      <div className="absolute inset-0 bg-linear-to-br from-[#10B981]/5 via-transparent to-[#0A2A54]/5" />
 
       <div className="relative space-y-4">
         <div className="flex items-center gap-2">

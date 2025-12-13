@@ -1,5 +1,6 @@
 import * as React from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "@/app/components/tailwind-functions";
+
 import { cva, type VariantProps } from "class-variance-authority"
 
 const statusBadgeVariants = cva(
