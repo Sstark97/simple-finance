@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Gastos Page', () => {
-  test('should load gastos page successfully', async ({ page }) => {
+  test('should load expenses page successfully', async ({ page }) => {
     await page.goto('/gastos');
 
     // Verify page loaded
@@ -12,7 +12,7 @@ test.describe('Gastos Page', () => {
     await page.goto('/gastos');
 
     // Verify header title
-    await expect(page.getByRole('heading', { name: /historial de gastos/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /historial de expenses/i })).toBeVisible();
   });
 
   test('should display summary cards with totals', async ({ page }) => {

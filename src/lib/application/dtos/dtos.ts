@@ -1,3 +1,5 @@
+import {Dashboard} from "@/lib/domain/models/Dashboard";
+
 export interface HeritageRaw {
     month: string;
     total: number;
@@ -28,4 +30,10 @@ export interface Expense {
 export type ExpensesResult = {
     expenses: Expense[],
     error?: string
+}
+
+export interface DashBoardResult {
+    dashboard: Dashboard;
+    error?: string;
+    showMessage: boolean;
 }

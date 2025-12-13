@@ -20,7 +20,7 @@ test.describe('Patrimonio Page', () => {
 
     // Verify KPI cards are visible
     await expect(page.getByText(/patrimonio actual/i)).toBeVisible();
-    await expect(page.getByText(/crecimiento último date/i)).toBeVisible();
+    await expect(page.getByText(/crecimiento último month/i)).toBeVisible();
   });
 
   test('should display line chart', async ({ page }) => {
@@ -45,7 +45,7 @@ test.describe('Patrimonio Page', () => {
 
     if (hasTable) {
       // Verify table headers
-      await expect(page.getByRole('columnheader', { name: /date/i })).toBeVisible();
+      await expect(page.getByRole('columnheader', { name: /month/i })).toBeVisible();
       await expect(page.getByRole('columnheader', { name: /saving/i })).toBeVisible();
       await expect(page.getByRole('columnheader', { name: /investment/i })).toBeVisible();
       await expect(page.getByRole('columnheader', { name: /total/i })).toBeVisible();

@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useEffect, useRef } from 'react';
+import {ReactNode, useActionState, useEffect, useRef} from 'react';
 import { useFormStatus } from 'react-dom';
 import { FinanceInput } from '@/app/components/ui/finance-input';
 import { FinanceButton } from '@/app/components/ui/finance-button';
@@ -10,7 +10,7 @@ import { updateNetWorth, NetWorthFormState } from '@/lib/infrastructure/actions/
 
 interface NetWorthFormProps {
   initialNetWorth: {
-    date: string;
+    month: string;
     saving: number;
     investment: number;
   };
@@ -21,7 +21,7 @@ const initialState: NetWorthFormState = {
   errors: {},
 };
 
-function SubmitButton(): React.ReactNode {
+function SubmitButton(): ReactNode {
   const { pending } = useFormStatus();
 
   return (
@@ -32,7 +32,7 @@ function SubmitButton(): React.ReactNode {
   );
 }
 
-export function NetWorthForm({ initialNetWorth }: NetWorthFormProps): React.ReactNode {
+export function NetWorthForm({ initialNetWorth }: NetWorthFormProps): ReactNode {
   const [state, formAction] = useActionState(updateNetWorth, initialState);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -42,7 +42,6 @@ export function NetWorthForm({ initialNetWorth }: NetWorthFormProps): React.Reac
         toast.error(state.message);
       } else {
         toast.success(state.message);
-        // No reset needed as initial values come from props
       }
     }
   }, [state]);
@@ -80,10 +79,10 @@ export function NetWorthForm({ initialNetWorth }: NetWorthFormProps): React.Reac
         </div>
       </div>
       <div>
-        <FinanceInput label="Mes a actualizar" type="date" className="mt-4"
+        <FinanceInput label="Mes a actualizar" type="month" className="mt-4"
           name="month"
           defaultValue={initialNetWorth.month}
-          aria-describedby="date-error"
+          aria-describedby="month-error"
         />
         <div id="month-error" aria-live="polite" aria-atomic="true">
           {state.errors?.month &&

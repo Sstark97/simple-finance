@@ -8,7 +8,7 @@ test.describe('Authentication Flow', () => {
       await expect(page).toHaveURL(/\/login/);
     });
 
-    test('should redirect to /login when accessing /gastos', async ({ page }) => {
+    test('should redirect to /login when accessing /expenses', async ({ page }) => {
       await page.goto('/gastos');
 
       await expect(page).toHaveURL(/\/login/);
@@ -96,7 +96,7 @@ test.describe('Authentication Flow', () => {
       await expect(page).toHaveURL(/\/login/);
     });
 
-    test('should redirect /gastos to login when no session cookie', async ({ page }) => {
+    test('should redirect /expenses to login when no session cookie', async ({ page }) => {
       await page.goto('/gastos');
 
       await expect(page).toHaveURL(/\/login/);

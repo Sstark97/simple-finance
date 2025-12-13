@@ -4,15 +4,15 @@ import type { DashboardRepository } from '@/lib/application/repositories/Dashboa
 import type { Dashboard } from '@/lib/domain/models/Dashboard';
 
 describe('GetCurrentDashboard', () => {
-  it('should return dashboard data for a given date', async () => {
+  it('should return dashboard data for a given month', async () => {
     const mockDashboard: Dashboard = {
-      mes: new Date('2025-12-01'),
-      ingresos: 3000,
-      gastos: 1500,
-      ahorro: 800,
-      inversion: 700,
-      dineroLibre: 0,
-      estado: 'OK',
+      month: new Date('2025-12-01'),
+      income: 3000,
+      expenses: 1500,
+      saving: 800,
+      investment: 700,
+      freeMoney: 0,
+      state: 'OK',
     };
 
     const mockRepository: DashboardRepository = {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useEffect, useRef } from 'react';
+import {ReactNode, useActionState, useEffect, useRef} from 'react';
 import { useFormStatus } from 'react-dom';
 import { FinanceInput } from '@/app/components/ui/finance-input';
 import { FinanceButton } from '@/app/components/ui/finance-button';
@@ -10,7 +10,7 @@ import { updateMonthlySettings, MonthlySettingsFormState } from '@/lib/infrastru
 
 interface MonthlySettingsFormProps {
   initialMonthlySettings: {
-    date: string;
+    month: string;
     income: number;
     saving: number;
     investment: number;
@@ -22,7 +22,7 @@ const initialState: MonthlySettingsFormState = {
   errors: {},
 };
 
-function SubmitButton(): React.ReactNode {
+function SubmitButton(): ReactNode {
   const { pending } = useFormStatus();
 
   return (
@@ -33,7 +33,7 @@ function SubmitButton(): React.ReactNode {
   );
 }
 
-export function MonthlySettingsForm({ initialMonthlySettings }: MonthlySettingsFormProps): React.ReactNode {
+export function MonthlySettingsForm({ initialMonthlySettings }: MonthlySettingsFormProps): ReactNode {
   const [state, formAction] = useActionState(updateMonthlySettings, initialState);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -43,7 +43,6 @@ export function MonthlySettingsForm({ initialMonthlySettings }: MonthlySettingsF
         toast.error(state.message);
       } else {
         toast.success(state.message);
-        // No reset needed as initial values come from props
       }
     }
   }, [state]);
@@ -60,8 +59,8 @@ export function MonthlySettingsForm({ initialMonthlySettings }: MonthlySettingsF
           aria-describedby="income-error"
         />
         <div id="ingresos-error" aria-live="polite" aria-atomic="true">
-          {state.errors?.ingresos &&
-            state.errors.ingresos.map((error: string) => (
+          {state.errors?.income &&
+            state.errors.income.map((error: string) => (
               <p className="mt-1 text-xs text-red-500" key={error}>
                 {error}
               </p>
@@ -75,8 +74,8 @@ export function MonthlySettingsForm({ initialMonthlySettings }: MonthlySettingsF
           aria-describedby="saving-error"
         />
         <div id="ahorro-error" aria-live="polite" aria-atomic="true">
-          {state.errors?.ahorro &&
-            state.errors.ahorro.map((error: string) => (
+          {state.errors?.saving &&
+            state.errors.saving.map((error: string) => (
               <p className="mt-1 text-xs text-red-500" key={error}>
                 {error}
               </p>
@@ -90,8 +89,8 @@ export function MonthlySettingsForm({ initialMonthlySettings }: MonthlySettingsF
           aria-describedby="investment-error"
         />
         <div id="inversion-error" aria-live="polite" aria-atomic="true">
-          {state.errors?.inversion &&
-            state.errors.inversion.map((error: string) => (
+          {state.errors?.investment &&
+            state.errors.investment.map((error: string) => (
               <p className="mt-1 text-xs text-red-500" key={error}>
                 {error}
               </p>

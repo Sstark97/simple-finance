@@ -21,11 +21,11 @@ test.describe('Dashboard Page', () => {
     expect(hasKPI || hasSkeleton).toBeTruthy();
   });
 
-  test('should have navigation to gastos page', async ({ page }) => {
+  test('should have navigation to expenses page', async ({ page }) => {
     await page.goto('/');
 
-    // Find and click the gastos navigation link
-    const gastosLink = page.getByRole('link', { name: /gastos/i });
+    // Find and click the expenses navigation link
+    const gastosLink = page.getByRole('link', { name: /expenses/i });
     await expect(gastosLink).toBeVisible();
   });
 

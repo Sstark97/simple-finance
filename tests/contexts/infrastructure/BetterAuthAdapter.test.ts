@@ -163,7 +163,7 @@ describe('BetterAuthAdapter', () => {
       expect(result?.createdAt).toBeInstanceOf(Date);
     });
 
-    it('should use current date when createdAt is invalid', async () => {
+    it('should use current month when createdAt is invalid', async () => {
       const userWithInvalidDate = {
         ...mockBetterAuthUser,
         createdAt: null,

@@ -55,7 +55,7 @@ export async function addTransaction(prevState: FormState, formData: FormData): 
 
   // 6. Si todo va bien, revalidar la caché de las páginas afectadas y devolver un mensaje de éxito.
   revalidatePath('/'); // Revalida la página del Dashboard
-  revalidatePath('/gastos'); // Revalida la página del historial de gastos
+  revalidatePath('/expenses'); // Revalida la página del historial de expenses
 
   return {
     message: 'Transacción añadida con éxito.',

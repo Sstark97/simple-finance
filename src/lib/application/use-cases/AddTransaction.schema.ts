@@ -13,7 +13,7 @@ export const AddTransactionSchema = z.object({
     .positive({ message: 'El amount debe ser mayor que cero.' }),
   // La fecha viene del formulario como un string 'YYYY-MM-DD'.
   date: z.string().min(1, { message: 'Por favor, selecciona una fecha.' }),
-  // El tipo no lo incluimos porque nuestro formulario de ejemplo es solo para gastos.
+  // El tipo no lo incluimos porque nuestro formulario de ejemplo es solo para expenses.
   // Si tuviéramos un campo, sería:
   // type: z.enum(['income', 'expense'], { required_error: 'Debes seleccionar un tipo.' }),
 });

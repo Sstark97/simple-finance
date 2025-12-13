@@ -78,9 +78,9 @@ export function TransactionForm(): React.ReactNode {
         <FinanceInput 
           label="Fecha" 
           name="date"
-          type="date" 
+          type="month"
           defaultValue={new Date().toISOString().split('T')[0]}
-          aria-describedby="date-error"
+          aria-describedby="month-error"
         />
         <div id="date-error" aria-live="polite" aria-atomic="true">
           {state.errors?.fechaCobro &&

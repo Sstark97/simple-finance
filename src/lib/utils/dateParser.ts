@@ -4,9 +4,9 @@
  */
 
 /**
- * Parses a date-year string in Spanish format ("enero de 2025") into a Date object
+ * Parses a month-year string in Spanish format ("enero de 2025") into a Date object
  * @param dateString - Date string in format "nombre_del_mes de YYYY" (e.g., "diciembre de 2025")
- * @returns Date object set to the first day of the date in UTC
+ * @returns Date object set to the first day of the month in UTC
  */
 export function parseMonthYearString(dateString: string): Date {
   const monthNames = [
@@ -51,10 +51,10 @@ export function parseDateFromSheet(dateString: string): Date {
       'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
     ];
 
-    // Try abbreviated date first
+    // Try abbreviated month first
     let monthIndex = monthAbbreviations[monthAbbr];
 
-    // If not found, try full date name
+    // If not found, try full month name
     if (monthIndex === undefined) {
       monthIndex = monthNames.indexOf(monthAbbr);
     }
@@ -66,8 +66,8 @@ export function parseDateFromSheet(dateString: string): Date {
 }
 
 /**
- * Parses a day-date-year string in various formats into a Date object
- * @param dateString - Date string in format "DD/MM/YYYY", "DD/MM/YY", or "D de date de YYYY"
+ * Parses a day-month-year string in various formats into a Date object
+ * @param dateString - Date string in format "DD/MM/YYYY", "DD/MM/YY", or "D de month de YYYY"
  * @returns Date object in UTC
  */
 export function parseDayMonthYearString(dateString: string): Date {
@@ -109,7 +109,7 @@ export function parseDayMonthYearString(dateString: string): Date {
   const month = parseInt(parts[1], 10);
   let year = parseInt(parts[2], 10);
 
-  // Validate day and date
+  // Validate day and month
   if (day < 1 || day > 31) {
     throw new Error(`Invalid day: ${day}. Must be between 1 and 31`);
   }
@@ -126,9 +126,9 @@ export function parseDayMonthYearString(dateString: string): Date {
 }
 
 /**
- * Formats a Date object into Google Sheets date format in Spanish (e.g., "diciembre de 2025")
+ * Formats a Date object into Google Sheets month format in Spanish (e.g., "diciembre de 2025")
  * @param date - Date object to format
- * @returns String in format "date de año" (e.g., "diciembre de 2025")
+ * @returns String in format "month de año" (e.g., "diciembre de 2025")
  */
 export function formatMonthForSheet(date: Date): string {
   const options: Intl.DateTimeFormatOptions = { month: 'long', year: 'numeric', timeZone: 'UTC' };
@@ -136,7 +136,7 @@ export function formatMonthForSheet(date: Date): string {
 }
 
 /**
- * Formats a Date object into Google Sheets date format (DD/MM/YYYY)
+ * Formats a Date object into Google Sheets month format (DD/MM/YYYY)
  * @param date - Date object to format
  * @returns String in format "DD/MM/YYYY"
  */

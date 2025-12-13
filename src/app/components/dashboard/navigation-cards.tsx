@@ -59,7 +59,7 @@ export function NavigationCards() {
       <NavigationCard
         title="Historial de Gastos"
         description="Revisa todas tus transacciones"
-        href="/gastos"
+        href="/expenses"
         icon={<History className="h-6 w-6" />}
         delay={400}
       />
