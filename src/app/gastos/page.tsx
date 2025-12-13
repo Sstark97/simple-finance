@@ -1,5 +1,5 @@
 import type {ReactNode} from "react";
-import {GetTransactions} from '@/lib/application/use-cases/GetTransactions';
+import {GetExpenses} from '@/lib/application/use-cases/GetExpenses';
 import {GoogleSheetsTransactionRepository} from '@/lib/infrastructure/repositories/GoogleSheetsTransactionRepository';
 import {ExpenseHeader} from '@/app/components/expenses/expense-header';
 import {ExpenseSummary} from '@/app/components/expenses/expense-summary';
@@ -8,10 +8,9 @@ import {ExpensesCalculator} from "@/lib/domain/services/expenses-calculator";
 
 export default async function ExpensesPage(): Promise<ReactNode> {
   const transactionRepository = new GoogleSheetsTransactionRepository();
-  const getTransactionsUseCase = new GetTransactions(transactionRepository);
-  const {expenses, error} = await getTransactionsUseCase.execute();
+  const getExpensesUseCase = new GetExpenses(transactionRepository);
+  const {expenses, error} = await getExpensesUseCase.execute();
   const {totalAmount, transactionCount} = new ExpensesCalculator(expenses);
-  console.log(expenses);
 
   return (
     <main className="min-h-screen bg-background">

@@ -10,7 +10,7 @@ import { updateNetWorth, NetWorthFormState } from '@/lib/infrastructure/actions/
 
 interface NetWorthFormProps {
   initialNetWorth: {
-    month: string;
+    date: string;
     saving: number;
     investment: number;
   };
@@ -51,13 +51,13 @@ export function NetWorthForm({ initialNetWorth }: NetWorthFormProps): React.Reac
     <form ref={formRef} action={formAction} className="space-y-4">
       <div>
         <FinanceInput label="Hucha (Efectivo)" placeholder="0,00" type="number" icon={<span className="text-sm font-medium">€</span>}
-          name="hucha"
+          name="saving"
           defaultValue={initialNetWorth.saving}
           aria-describedby="saving-error"
         />
-        <div id="hucha-error" aria-live="polite" aria-atomic="true">
-          {state.errors?.hucha &&
-            state.errors.hucha.map((error: string) => (
+        <div id="saving-error" aria-live="polite" aria-atomic="true">
+          {state.errors?.saving &&
+            state.errors.saving.map((error: string) => (
               <p className="mt-1 text-xs text-red-500" key={error}>
                 {error}
               </p>
@@ -66,13 +66,13 @@ export function NetWorthForm({ initialNetWorth }: NetWorthFormProps): React.Reac
       </div>
       <div>
         <FinanceInput label="Total Invertido" placeholder="0,00" type="number" icon={<span className="text-sm font-medium">€</span>} className="mt-4"
-          name="invertido"
+          name="investment"
           defaultValue={initialNetWorth.investment}
           aria-describedby="investment-error"
         />
-        <div id="invertido-error" aria-live="polite" aria-atomic="true">
-          {state.errors?.invertido &&
-            state.errors.invertido.map((error: string) => (
+        <div id="investment-error" aria-live="polite" aria-atomic="true">
+          {state.errors?.investment &&
+            state.errors.investment.map((error: string) => (
               <p className="mt-1 text-xs text-red-500" key={error}>
                 {error}
               </p>
@@ -80,10 +80,10 @@ export function NetWorthForm({ initialNetWorth }: NetWorthFormProps): React.Reac
         </div>
       </div>
       <div>
-        <FinanceInput label="Mes a actualizar" type="month" className="mt-4"
+        <FinanceInput label="Mes a actualizar" type="date" className="mt-4"
           name="month"
           defaultValue={initialNetWorth.month}
-          aria-describedby="month-error"
+          aria-describedby="date-error"
         />
         <div id="month-error" aria-live="polite" aria-atomic="true">
           {state.errors?.month &&

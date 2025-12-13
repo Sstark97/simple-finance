@@ -52,7 +52,7 @@ export async function updateMonthlySettings(
   try {
     const { month, ingresos, ahorro, inversion } = validatedFields.data;
     
-    const monthDate = new Date(month + '-01'); // Convert YYYY-MM to a Date object (first day of month)
+    const monthDate = new Date(month + '-01'); // Convert YYYY-MM to a Date object (first day of date)
 
     const updatedDashboard = await updateMonthlySettingsUseCase.execute(
       monthDate,

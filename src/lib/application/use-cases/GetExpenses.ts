@@ -2,7 +2,7 @@ import { TransactionRepository } from '@/lib/application/repositories/Transactio
 import {Expense, ExpensesResult} from "@/lib/application/dtos/dtos";
 import {Transaction} from "@/lib/domain/models/Transaction";
 
-export class GetTransactions {
+export class GetExpenses {
   constructor(private transactionRepository: TransactionRepository) {}
 
   async execute(): Promise<ExpensesResult> {

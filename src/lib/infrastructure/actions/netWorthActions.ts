@@ -50,7 +50,7 @@ export async function updateNetWorth(
   try {
     const { month, hucha, invertido } = validatedFields.data;
     
-    const monthDate = new Date(month + '-01'); // Convert YYYY-MM to a Date object (first day of month)
+    const monthDate = new Date(month + '-01'); // Convert YYYY-MM to a Date object (first day of date)
 
     const updatedNetWorth = await updateNetWorthUseCase.execute(
       monthDate,

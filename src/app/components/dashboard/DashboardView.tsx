@@ -24,7 +24,7 @@ import {
 import {ArrowDownCircle, ArrowUpCircle, Target} from "lucide-react";
 import {Skeleton} from "@/app/components/ui/skeleton";
 
-// Función para obtener el month en formato YYYY-MM
+// Función para obtener el date en formato YYYY-MM
 const getYearMonth = (date: Date) => date.toISOString().slice(0, 7);
 
 export default async function DashboardView({
@@ -49,7 +49,7 @@ export default async function DashboardView({
     selectedMonthString = getYearMonth(dateToFetch);
   }
   
-  // Asegurarnos de que usamos el primer día del month para la búsqueda.
+  // Asegurarnos de que usamos el primer día del date para la búsqueda.
   dateToFetch.setDate(1);
 
   let dashboardData: Dashboard | null = null;
@@ -136,7 +136,7 @@ export default async function DashboardView({
             {showMessage && (
                 <div className="py-10 border-2 border-dashed rounded-lg text-center text-muted-foreground">
                     <h3 className="text-lg font-semibold">
-                        {errorMessage || "No hay datos para este month"}
+                        {errorMessage || "No hay datos para este date"}
                     </h3>
                     <p className="text-sm">Selecciona otro mes o utiliza los formularios de abajo para añadir información.</p>
                 </div>

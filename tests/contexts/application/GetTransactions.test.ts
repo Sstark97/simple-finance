@@ -1,9 +1,9 @@
 import { describe, it, expect, vi } from 'vitest';
-import { GetTransactions } from '@/lib/application/use-cases/GetTransactions';
+import { GetExpenses } from '@/lib/application/use-cases/GetExpenses';
 import type { TransactionRepository } from '@/lib/application/repositories/TransactionRepository';
 import type { TransactionRawData } from '@/lib/domain/models/TransactionRaw';
 
-describe('GetTransactions', () => {
+describe('GetExpenses', () => {
   it('should return all transactions', async () => {
     const mockTransactions: TransactionRawData[] = [
       {
@@ -25,7 +25,7 @@ describe('GetTransactions', () => {
       addTransaction: vi.fn(),
     };
 
-    const useCase = new GetTransactions(mockRepository);
+    const useCase = new GetExpenses(mockRepository);
     const result = await useCase.execute();
 
     expect(result).toEqual(mockTransactions);
@@ -39,7 +39,7 @@ describe('GetTransactions', () => {
       addTransaction: vi.fn(),
     };
 
-    const useCase = new GetTransactions(mockRepository);
+    const useCase = new GetExpenses(mockRepository);
     const result = await useCase.execute();
 
     expect(result).toEqual([]);
@@ -53,7 +53,7 @@ describe('GetTransactions', () => {
       addTransaction: vi.fn(),
     };
 
-    const useCase = new GetTransactions(mockRepository);
+    const useCase = new GetExpenses(mockRepository);
 
     await expect(useCase.execute()).rejects.toThrow('Failed to fetch transactions');
   });

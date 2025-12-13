@@ -5,7 +5,7 @@ import { z } from 'zod';
  * @description Define el esquema de validación para los datos de entrada al actualizar la configuración mensual.
  */
 export const UpdateMonthlySettingsSchema = z.object({
-  month: z.string().min(1, { message: 'Por favor, selecciona un month.' }),
+  month: z.string().min(1, { message: 'Por favor, selecciona un date.' }),
   ingresos: z.coerce
     .number({ invalid_type_error: 'Los income deben ser un número.' })
     .min(0, { message: 'Los income no pueden ser negativos.' }),

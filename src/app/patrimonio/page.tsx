@@ -1,5 +1,5 @@
 import type {ReactNode} from "react";
-import {GetNetWorthHistory} from '@/lib/application/use-cases/GetNetWorthHistory';
+import {GetHeritageUseCase} from '@/lib/application/use-cases/GetHeritageUseCase';
 import {GoogleSheetsNetWorthRepository} from '@/lib/infrastructure/repositories/GoogleSheetsNetWorthRepository';
 import {HeritageHeader} from '@/app/components/heritage/heritage-header';
 import {HeritageKPIs} from '@/app/components/heritage/heritage-kpis';
@@ -9,8 +9,8 @@ import {PkiCalculator} from "@/lib/domain/services/kpi-calculator";
 
 export default async function HeritagePage(): Promise<ReactNode> {
     const netWorthRepository = new GoogleSheetsNetWorthRepository();
-    const getNetWorthHistoryUseCase = new GetNetWorthHistory(netWorthRepository);
-    const { heritage, error } = await getNetWorthHistoryUseCase.execute();
+    const getHeritageUseCase = new GetHeritageUseCase(netWorthRepository);
+    const { heritage, error } = await getHeritageUseCase.execute();
     const { currentTotal, previousTotal, growthPercentage } = new PkiCalculator(heritage);
 
     return (

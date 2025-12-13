@@ -88,18 +88,18 @@ export class GoogleSheetsNetWorthRepository implements NetWorthRepository {
             return parseFloat(cleaned) ?? 0;
         };
 
-        const hucha = parseNumber(row[1]);
-        const invertido = parseNumber(row[2]);
+        const saving = parseNumber(row[1]);
+        const investment = parseNumber(row[2]);
         const total = parseNumber(row[3]);
 
-        const calculatedTotal = total !== 0 ? total : hucha + invertido;
+        const calculatedTotal = total !== 0 ? total : saving + investment;
 
-        return {
-            mes: parseMonthYearString(row[0]), // Ahora usa la nueva función de parseo
-            hucha,
-            invertido,
-            total: calculatedTotal,
-        };
+        return new NetWorth(
+            parseMonthYearString(row[0]),
+            saving,
+            investment,
+            calculatedTotal
+        )
     }
 
     private async updateNetWorth(rowIndex: number, rows: any[][] | null | undefined, hucha: number, invertido: number) {

@@ -46,7 +46,7 @@ export function DashboardHeader({ selectedMonth }: DashboardHeaderProps) {
         <div className="flex items-center gap-2">
           <label htmlFor="month-select" className="text-sm font-medium text-muted-foreground">Mes:</label>
           <input
-              type="month"
+              type="date"
               id="month-select"
               value={selectedMonth}
               onChange={handleMonthChange}

@@ -30,13 +30,13 @@ export function NetWorthTable({ data }: NetWorthTableProps): React.ReactNode {
           {data.map((item, index) => (
             <tr key={index}>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {new Date(item.mes).toLocaleDateString('es-ES', { month: 'long', year: 'numeric', timeZone: 'UTC' })}
+                {new Date(item.date).toLocaleDateString('es-ES', { month: 'long', year: 'numeric', timeZone: 'UTC' })}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
-                {item.hucha.toFixed(2)} €
+                {item.saving.toFixed(2)} €
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
-                {item.invertido.toFixed(2)} €
+                {item.investment.toFixed(2)} €
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-green-600 font-semibold">
                 {item.total.toFixed(2)} €

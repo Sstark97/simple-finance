@@ -10,7 +10,7 @@ import { updateMonthlySettings, MonthlySettingsFormState } from '@/lib/infrastru
 
 interface MonthlySettingsFormProps {
   initialMonthlySettings: {
-    month: string;
+    date: string;
     income: number;
     saving: number;
     investment: number;

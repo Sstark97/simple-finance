@@ -84,7 +84,7 @@ useEffect(() => { fetch('/api/transactions') }, [])
 // Server Component - sin 'use client'
 export default async function ExpensesPage() {
   const repository = new GoogleSheetsTransactionRepository();
-  const useCase = new GetTransactions(repository);
+  const useCase = new GetExpenses(repository);
   const transactions = await useCase.execute();
   return <TransactionsTable data={transactions} />;
 }
@@ -94,7 +94,7 @@ export default async function ExpensesPage() {
 Mismo patrón que gastos.
 
 #### 2.3 Refactorizar DashboardHeader
-Usar `<form>` con Server Action para cambio de month en lugar de `router.push`.
+Usar `<form>` con Server Action para cambio de date en lugar de `router.push`.
 
 **Archivos a modificar:**
 - `src/app/gastos/page.tsx`
@@ -359,7 +359,7 @@ Crear `src/app/login/page.tsx` con botón de Google Sign-In.
 - ✓ Escritos tests unitarios:
   - `tests/contexts/application/GetCurrentDashboard.test.ts`
   - `tests/contexts/application/AddTransaction.test.ts`
-  - `tests/contexts/application/GetTransactions.test.ts`
+  - `tests/contexts/application/GetExpenses.test.ts`
 - ✓ Escritos tests E2E:
   - `tests/app/dashboard.spec.ts`
   - `tests/app/gastos.spec.ts`
@@ -376,7 +376,7 @@ Crear `src/app/login/page.tsx` con botón de Google Sign-In.
   - Archivo: `src/lib/utils/dateParser.ts`
 
 ### ✅ Fase 4.5: COMPLETADA
-- ✓ Arreglado parseo de fechas (soporta formato español "D de month de YYYY")
+- ✓ Arreglado parseo de fechas (soporta formato español "D de date de YYYY")
 - ✓ Arreglado parseo de datos de NetWorth (rango A:D y cálculo automático de total)
 - ✓ Creados componentes de gastos (ExpenseHeader, ExpenseSummary, ExpenseFilters, ExpenseDataGrid, ExpensesFilteredView)
 - ✓ Página gastos adaptada con diseño V0 y datos reales

@@ -88,7 +88,7 @@ export function handleGoogleSheetsError(error: unknown): ErrorResponse {
 
 /**
  * Logs an error with context information
- * @param context - Context where the error occurred (e.g., "GetTransactions")
+ * @param context - Context where the error occurred (e.g., "GetExpenses")
  * @param error - The error object
  */
 export function logError(context: string, error: unknown): void {
